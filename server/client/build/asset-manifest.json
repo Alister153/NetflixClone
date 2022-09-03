@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9b269e74.css",
+    "main.js": "/static/js/main.f872931d.js",
+    "static/media/Zoro.jpg": "/static/media/Zoro.50046b5bbf58fb3d0e5d.jpg",
+    "static/media/Ichigo.jpg": "/static/media/Ichigo.1521435abcfff534463e.jpg",
+    "static/media/Luffy.jpg": "/static/media/Luffy.a915e88383f8f52ae6a4.jpg",
+    "static/media/Goku.jpg": "/static/media/Goku.db77052c657ee4e666e5.jpg",
+    "static/media/Gojo.jpg": "/static/media/Gojo.6643c32b4d3b61a36598.jpg",
+    "static/media/Oreki.jpg": "/static/media/Oreki.e6c2701a14405d707cc8.jpg",
+    "static/media/Nico Robin.jpg": "/static/media/Nico Robin.f7e608f7ca9506b1879d.jpg",
+    "static/media/notification.svg?s3g3t9": "/static/media/notification.5d0158671dd860c714c4.svg",
+    "static/media/notification.eot": "/static/media/notification.3657084dc0419605a91c.eot",
+    "static/media/notification.woff?s3g3t9": "/static/media/notification.c392cd33d9d9de730f9d.woff",
+    "static/media/notification.ttf?s3g3t9": "/static/media/notification.c5d9251ea82e42f75381.ttf",
+    "index.html": "/index.html",
+    "main.9b269e74.css.map": "/static/css/main.9b269e74.css.map",
+    "main.f872931d.js.map": "/static/js/main.f872931d.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9b269e74.css",
+    "static/js/main.f872931d.js"
+  ]
+}
