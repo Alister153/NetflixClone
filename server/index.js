@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-app.use(express.json());
 const PORT = process.env.PORT;
 const path = require("path");
 const __dirname1 = path.resolve();
@@ -17,6 +16,7 @@ if (process.env.NODE_ENV === "production") {
     res.send("App is running");
   });
 }
+app.use(express.json());
 app.use(
   cors({
     origin: "*",
@@ -26,6 +26,6 @@ app.use("/profile", require("./routes/Profiles"));
 app.use("/movies", require("./routes/Movies.js"));
 app.use("/login", require("./routes/LoginRoutes.js"));
 
-app.listen(PORT || 3000, () => {
+app.listen(PORT, () => {
   console.log("listening on " + PORT);
 });
