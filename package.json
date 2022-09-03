@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm run build",
     "install": "cd client && npm install",
@@ -15,9 +16,11 @@
     "axios": "^0.27.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.2",
+    "express": "^4.18.1",
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "vercel": "^28.2.2"
   },
   "engines": {
     "node": "14.16.1",
