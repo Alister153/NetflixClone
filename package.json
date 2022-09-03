@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm run build",
     "install": "cd client && npm install",
@@ -20,6 +20,7 @@
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
     "nodemon": "^2.0.19",
+    "react-icons": "^4.4.0",
     "vercel": "^28.2.2"
   },
   "engines": {
