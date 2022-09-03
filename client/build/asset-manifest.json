@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.9b269e74.css",
-    "main.js": "/static/js/main.ef8be57e.js",
+    "main.js": "/static/js/main.3124da6d.js",
     "static/media/Zoro.jpg": "/static/media/Zoro.50046b5bbf58fb3d0e5d.jpg",
     "static/media/Ichigo.jpg": "/static/media/Ichigo.1521435abcfff534463e.jpg",
     "static/media/Luffy.jpg": "/static/media/Luffy.a915e88383f8f52ae6a4.jpg",
@@ -15,10 +15,10 @@
     "static/media/notification.ttf?s3g3t9": "/static/media/notification.c5d9251ea82e42f75381.ttf",
     "index.html": "/index.html",
     "main.9b269e74.css.map": "/static/css/main.9b269e74.css.map",
-    "main.ef8be57e.js.map": "/static/js/main.ef8be57e.js.map"
+    "main.3124da6d.js.map": "/static/js/main.3124da6d.js.map"
   },
   "entrypoints": [
     "static/css/main.9b269e74.css",
-    "static/js/main.ef8be57e.js"
+    "static/js/main.3124da6d.js"
   ]
 }
