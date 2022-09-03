@@ -1,0 +1,285 @@
+* {
+  margin: 0%;
+  padding: 0%;
+  font-family: Arial;
+}
+.logo {
+  height: 10vh;
+  background: linear-gradient(180deg, black, #141414);
+}
+.logo div img {
+  height: 25px;
+}
+.Profiles--wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #141414;
+  width: 100%;
+  height: calc(100vh - 20vh);
+}
+.Profiles--wrapper .header {
+  color: white;
+  font-size: 25px;
+  margin: 10px;
+}
+.Profiles--wrapper .profiles {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  cursor: pointer;
+}
+.Profiles--wrapper .profiles .profiles--wrapper{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 55%;
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper{
+  width: 150px;
+  text-align: center;
+  margin: 5px;
+}
+.Profiles--wrapper .profiles figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper figure img {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  border: 2px solid transparent;
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper:hover img{
+  border: 2px solid rgb(202, 202, 202);
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper .user {
+  color: grey;
+  filter: brightness(60%);
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper:hover .user {
+  filter: brightness(100%);
+}
+.Profiles--wrapper button {
+  filter: brightness(60%);
+  cursor: pointer;
+  background-color: transparent;
+  color: gray;
+  padding: 10px;
+  font-size: 20px;
+  border: 2px solid gray;
+}
+.Profiles--wrapper button:hover {
+  filter: brightness(100%);
+}
+
+.Profiles--wrapper .n.profiles {
+  justify-content: center;
+}
+.Profiles--wrapper .n.profiles > div .new-profile {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid gray;
+  margin-bottom: 5px;
+  filter: brightness(60%);
+}
+.Profiles--wrapper .n.profiles > div:hover .new-profile {
+  filter: brightness(100%);
+}
+.Profiles--wrapper .n.profiles > div .new-profile p {
+  font-size: 100px;
+  color: gray;
+}
+.create-profile-wrapper {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.create-profile-wrapper .profile-image--wrapper {
+  position: relative;
+  width: 200px;
+  border: none;
+}
+.create-profile-wrapper .profile-image--wrapper figure {
+  position: relative;
+  width: 200px;
+  height: 220px;
+  box-shadow: 1px 5px 15px black;
+  background-color: #141414;
+  cursor: pointer;
+}
+.create-profile-wrapper .profile-image--wrapper figure:hover::after {
+  content: "Select";
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+  font-size: xx-large;
+  background-color: rgba(0, 0, 0, 0.397);
+}
+.create-profile-wrapper .profile-image--wrapper figure img{
+  width: 100%;
+  height: 100%;
+}
+.create-profile-wrapper .profile-image--wrapper figure img.on {
+  animation: image-vis 200ms ease;
+}
+.create-profile-wrapper .profile-image--wrapper figure img.off {
+  opacity: 0;
+  box-shadow: none !important;
+  animation: image-unvis 200ms ease;
+}
+.create-profile-wrapper .profile-image--wrapper .all-images {
+  position: absolute;
+  top: 0%;
+  left: 110%;
+  width: 220px;
+  z-index: 1;
+  margin: 0%;
+  overflow: hidden;
+  animation-delay: 10s;
+  animation: all-image 200ms ease;
+  background-color: black;
+  border: 1px solid grey;
+  border-radius: 2px;
+}
+.create-profile-wrapper
+  .profile-image--wrapper
+  .all-images
+  .all-images--wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  min-width: 260px;
+  animation-delay: 1000s;
+  animation: image-vis 2s ease;
+}
+.create-profile-wrapper
+  .profile-image--wrapper
+  .all-images
+  .all-images--wrapper
+  div {
+  width: 60px;
+  position: relative;
+  margin: 5px 5px;
+}
+.create-profile-wrapper
+  .profile-image--wrapper
+  .all-images
+  .all-images--wrapper
+  div
+  img {
+  width: 100%;
+}
+.create-profile-wrapper
+  .profile-image--wrapper
+  .all-images
+  .all-images--wrapper
+  div:hover::after {
+  content: "Select";
+  cursor: pointer;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  top: 0%;
+  left: 0%;
+  bottom: 0%;
+  right: 0%;
+  background-color: rgba(0, 0, 0, 0.397);
+}
+@keyframes all-image {
+  0% {
+    width: 0px;
+    height: fit-content;
+  }
+  100% {
+    width: 220px;
+    height: fit-content;
+  }
+}
+@keyframes image-vis {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes image-unvis {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    box-shadow: none !important;
+    opacity: 0;
+  }
+}
+.create-profile-wrapper .input-fields--wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 200px;
+}
+.create-profile-wrapper .input-fields--wrapper label {
+  display: block;
+  position: relative;
+  border: 1px solid grey;
+  height: 50px;
+  width: 220px;
+  border-radius: 3px;
+}
+.create-profile-wrapper .input-fields--wrapper label p {
+  position: absolute;
+  top: 0;
+  left: 0%;
+  transform: translateX(10px) translateY(100%);
+  transition: transform 400ms ease, font 400ms ease;
+  color: grey;
+}
+.create-profile-wrapper .input-fields--wrapper label.active p {
+  font-size: 10px;
+  transform: translateX(10px) translateY(50%);
+}
+.create-profile-wrapper .input-fields--wrapper input {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  padding: 5px 0px 0px 10px;
+}
+.create-profile-wrapper .input-fields--wrapper .btn-wrapper button {
+  padding: 10px 20px;
+  margin: 0px 10px;
+  color: white;
+  width: 100px;
+  height: 50px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.create-profile-wrapper .input-fields--wrapper .btn-wrapper .cancel {
+  background-color: transparent;
+  border: 3px solid grey;
+  border-radius: 2px;
+}
+.create-profile-wrapper .input-fields--wrapper .btn-wrapper .save {
+  background-color: red;
+  border: none;
+  border-radius: 2px;
+}
+.create-profile-wrapper .input-fields--wrapper .btn-wrapper button:active {
+  filter: brightness(50%);
+}

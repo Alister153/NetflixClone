@@ -1,0 +1,630 @@
+br {
+  display: block;
+  margin: 10px;
+}
+.signup {
+  background: url("https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/netflixteaser.png");
+  background-size: cover;
+  height: 100%;
+}
+.signup .navbar {
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(180deg, black, transparent);
+}
+.signup .navbar figure {
+  margin: 20px 0px;
+  width: 10%;
+  max-height: 100%;
+}
+.signup .navbar figure img {
+  width: 100%;
+}
+.signup .navbar .language-sign {
+  width: 15%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.signup .navbar .language-sign select {
+  width: 120px;
+  font-size: 15px;
+  background-color: black;
+  padding: 5px 10px;
+  border: 1px solid white;
+  border-radius: 1px;
+  color: white;
+}
+.signup .navbar .language-sign button {
+  color: white;
+  padding: 5px 15px;
+  background-color: red;
+  border-radius: 5px;
+  border: none;
+  font-size: 15px;
+}
+/* Login Modal */
+.login--modal {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+}
+.login--modal .modal--wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 400px;
+  border-radius: 5px;
+  height: 600px;
+}
+.login--modal .modal {
+  width: 70%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.login--modal .modal .email-password {
+  width: 100%;
+}
+.login--modal .modal .email-password label {
+  display: block;
+  background-color: white;
+  height: 45px;
+  border-radius: 5px;
+  position: relative;
+  margin: 10px 0px;
+  padding: 5px 20px;
+}
+.login--modal .modal .email-password label.active:after {
+  content: "";
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.555);
+  top: 0%;
+  bottom: 0%;
+  left: 0%;
+  right: 0;
+}
+.login--modal .modal .email-password label p:nth-child(1) {
+  position: absolute;
+  font-size: 17px;
+  left: 0%;
+  transform: translateX(20px) translateY(10px);
+  color: black;
+  background-color: transparent;
+  transition: transform 300ms ease, font 300ms ease;
+}
+.login--modal .modal .email-password label.active p:nth-child(1) {
+  font-size: 12px;
+  transform: translateX(20px) translateY(0px);
+}
+.login--modal .modal .email-password label input {
+  background-color: transparent;
+  position: relative;
+  transform: translateY(10px);
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  color: white;
+  border: none;
+  outline: none;
+  overflow: hidden;
+}
+.login--modal .modal .email-password label input:-webkit-autofill {
+  -webkit-box-shadow: 0px 0px 0px 1000px inset rgba(0, 0, 0, 0.555);
+}
+.login--modal .modal .email-password #password-container .password-toggle {
+  display: none;
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  right: 0%;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+}
+.login--modal
+  .modal
+  .email-password
+  #password-container.active
+  .password-toggle {
+  display: block;
+}
+.login--modal .modal .content--wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 15%;
+}
+.login--modal .modal .sign-btn {
+  border: none;
+  border-radius: 5px;
+  font-size: 20px;
+  padding: 15px;
+  width: 100%;
+  background-color: red;
+  color: white;
+}
+.login--modal .modal .extra-content {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin: 10px 0px;
+}
+.login--modal .modal .extra-content div label {
+  position: relative;
+  margin-right: 20px;
+}
+.login--modal .modal .extra-content input {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  opacity: 0;
+}
+.login--modal .modal .extra-content div label .check {
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 15px;
+  height: 15px;
+  opacity: 1;
+  background-color: white;
+}
+.login--modal .modal .extra-content div label .check::after {
+  position: absolute;
+  color: black;
+  content: "";
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+.login--modal .modal .extra-content div label .check::after {
+  background-color: rgba(0, 0, 0, 0.555);
+}
+.login--modal .modal .extra-content div label .check:hover::after {
+  background-color: white;
+}
+.login--modal .modal .extra-content div label input:checked ~ .check:after {
+  content: "\2714";
+}
+.login--modal .modal .extra-content .help:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.login--modal .modal .modal--footer p {
+  font-size: 15px;
+}
+.login--modal .modal .modal--footer span {
+  cursor: pointer;
+  color: white;
+  margin: 0px 5px;
+}
+.login--modal .modal .modal--footer span:hover {
+  text-decoration: underline;
+}
+
+/* Create Modal */
+.create--wrapper {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.create--wrapper .header {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  text-align: center;
+  font-size: 40px;
+  width: 100%;
+}
+.create--wrapper .header .title-1 {
+  width: 40%;
+}
+.create--wrapper .header .title-1 * {
+  margin: 10px 0px;
+}
+.create--wrapper .header .title-2 {
+  width: 45%;
+}
+.create--wrapper .header .title-2 > * {
+  margin: 20px 0px;
+}
+.title-2 .email-form {
+  display: flex;
+  justify-content: start;
+  width: 100%;
+  height: 60px;
+  background-color: white;
+}
+.title-2 .email-form .email {
+  position: relative;
+  background-color: white;
+  min-height: 60px;
+  width: 100%;
+}
+.title-2 .email-form .email p {
+  position: absolute;
+  z-index: 0;
+  color: grey;
+  top: 0%;
+  transform: translateX(10px) translateY(130%);
+  transition: transform 200ms ease, font 200ms ease;
+  font-size: 15px;
+}
+.title-2 .email-form.active .email p {
+  transform: translateX(10px) translateY(5px);
+  font-size: 10px;
+}
+.title-2 .email-form input {
+  position: relative;
+  font-size: 15px;
+  z-index: 1;
+  background-color: transparent;
+  width: 100%;
+  border: none;
+  outline: none;
+  color: black;
+  height: 100%;
+  padding: 0px 10px;
+}
+.title-2 .email-form button {
+  cursor: pointer;
+  font-size: 20px;
+  width: 30%;
+  height: 100%;
+  border: none;
+  color: white;
+  background-color: red;
+}
+.title-2 .email-form button:active {
+  transform: scale(1.05);
+}
+
+.benefits {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-evenly;
+  background-color: black;
+  border-top: 10px solid rgb(20, 20, 20);
+}
+.benefits > div {
+  margin: 10px 60px;
+}
+.benefits .text--wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.benefits .text--wrapper h1 {
+  font-size: 50px;
+}
+.benefits .text--wrapper p {
+  font-size: 25px;
+}
+.benefits .text--wrapper * {
+  color: white;
+}
+.benefits .image--wrapper div {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+.benefits .image--wrapper div img {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+}
+.benefits .image--wrapper div video {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 70%;
+  transform: translateY(30%) translateX(17%);
+}
+.benefits--2 .image--wrapper .container div {
+  position: absolute;
+  bottom: 0%;
+  left: 0%;
+  padding: 10px 20px;
+  z-index: 2;
+  background-color: black;
+  transform: translateY(-30%) translateX(45%);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border: 1px solid grey;
+  border-radius: 10px;
+}
+.benefits--2 .image--wrapper .container div img {
+  width: 55px;
+  margin-right: 10px;
+}
+.benefits--2 .image--wrapper .container div span * {
+  margin: 5px 0px;
+}
+.benefits--3 .image--wrapper div video {
+  width: 55%;
+  transform: translateX(40%) translateY(25%);
+}
+
+.questions--wrapper {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px 0px;
+}
+.questions--wrapper .main-questions {
+  width: 55%;
+}
+.questions--wrapper .main-questions .title h1 {
+  color: white;
+  font-size: 50px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.questions--wrapper .main-questions .questions {
+  justify-content: space-between;
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.questions--wrapper .main-questions .questions .question {
+  display: flex;
+  background-color: #303030;
+  justify-content: space-between;
+  padding: 20px;
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+.questions--wrapper .main-questions .questions .answer {
+  max-height: 0;
+  background-color: #303030;
+  overflow: hidden;
+  transition: max-height 250ms ease-in-out;
+}
+.questions--wrapper .main-questions .questions .answer p {
+  padding: 10px 20px;
+}
+.questions--wrapper .main-questions .questions .answer[data-answer] {
+  max-height: 1000px;
+}
+.questions--wrapper .title-2 {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 50%;
+}
+.questions--wrapper .title-2 > * {
+  margin: 5px 0px;
+}
+.footer--wrapper {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+}
+.footer--wrapper .footer {
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.footer--wrapper p:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* get-started */
+.get-started--wrapper {
+  background-color: white;
+  height: 100vh;
+}
+.get-started--wrapper nav {
+  height: 15vh;
+  display: flex;
+  padding: 0px 30px;
+  align-items: center;
+  background: white;
+  border-bottom: 1px solid rgb(207, 207, 207);
+}
+.get-started--wrapper nav div:nth-child(1) {
+  width: 100px;
+  height: 30px;
+}
+.get-started--wrapper nav figure {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.2);
+}
+.get-started--wrapper nav img {
+  width: 100%;
+  height: 100%;
+}
+.get-started--wrapper nav div:nth-child(2) {
+  cursor: pointer;
+  font-weight: 500;
+}
+.get-started--wrapper nav div:nth-child(2):hover {
+  text-decoration: underline;
+}
+.get-started--wrapper .setup {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.get-started--wrapper .setup .parts {
+  position: absolute;
+  z-index: -1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  visibility: none;
+  width: 700px;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: opacity 200ms ease, transform 100ms ease;
+}
+.get-started--wrapper .setup .parts[data-active] {
+  transform: translateX(0px);
+  z-index: 1;
+  opacity: 1;
+}
+.get-started--wrapper .setup .parts.off[data-active] {
+  transform: translateX(-100px);
+  opacity: 0;
+}
+.get-started--wrapper .setup .deets {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+.get-started--wrapper .setup .deets > * {
+  color: #333333;
+  margin: 5px 0px;
+}
+.get-started--wrapper .setup .parts figure {
+  width: 500px;
+}
+.get-started--wrapper .setup .parts figure img{
+  width: 100%;
+}
+.get-started--wrapper .setup .password {
+  position: relative;
+  width: 50%;
+  height: 50%;
+  margin: 10px;
+}
+.get-started--wrapper .setup .password div {
+  width: 100%;
+  height: 50%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+.get-started--wrapper .setup .password div .placeholder {
+  position: absolute;
+  top: 0%;
+  transform: translateY(15px) translateX(15%);
+  transition: transform 400ms ease , font 400ms ease, color 200ms ease;
+}
+.get-started--wrapper .setup .password.active div .placeholder {
+  font-size: 15px;
+  transform: translateY(15%) translateX(15%);
+}
+.get-started--wrapper .setup .password div label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  width: 100%;
+}
+.get-started--wrapper .setup .password div label input {
+  color: black;
+  width: 80%;
+  transform: translateY(0px);
+  padding: 5px 10px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.get-started--wrapper .setup .password div label .pass-vis {
+  transform: translateX(-10px);
+  cursor: pointer;
+}
+.get-started--wrapper .setup .nxt-btn {
+  width: 20%;
+}
+.get-started--wrapper .setup button {
+  cursor: pointer;
+  width: 100%;
+  background-color: red;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px 50px;
+}
+@media only screen and (max-width: 900px) {
+  /* h1 {
+    font-size: 30px !important;
+  } */
+  .login--modal .modal--wrapper {
+    justify-content: start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+  }
+  .create--wrapper .header {
+    font-size: 15px;
+  }
+  .create--wrapper .header .title-1 {
+    width: 350px;
+  }
+  .create--wrapper .header .title-2 {
+    width: 300px;
+  }
+  .title-2 .email-form {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+    background-color: transparent;
+  }
+  .title-2 .email-form > * {
+    margin: 10px 0px;
+  }
+  .title-2 .email-form input {
+    width: 300px;
+  }
+  .title-2 .email-form button {
+    padding: 10px 20px;
+    width: 60%;
+  }
+  .benefits {
+    padding: 50px 0px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .benefits--2,
+  .benefits--4 {
+    flex-direction: column-reverse;
+  }
+  .benefits--2 .image--wrapper .container div {
+    transform: translateX(10%) translateY(20%);
+  }
+  .benefits > div {
+    margin: 10px;
+  }
+  .benefits .text--wrapper {
+    text-align: center;
+  }
+  .benefits .text--wrapper p {
+    font-size: 20px;
+  }
+  .questions--wrapper .main-questions {
+    width: 350px;
+    margin: 0px 15px;
+  }
+  .get-started--wrapper .setup .parts figure {
+    width: 300px;
+  }
+}
