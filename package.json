@@ -16,5 +16,9 @@
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
     "nodemon": "^2.0.19"
+  },
+  "engines": {
+    "node": "14.16.1",
+    "npm": "6.14.12"
   }
 }
