@@ -26,6 +26,6 @@ app.use("/profile", require("./routes/Profiles"));
 app.use("/movies", require("./routes/Movies.js"));
 app.use("/login", require("./routes/LoginRoutes.js"));
 
-app.listen(PORT, () => {
+app.listen(PORT || 3000, () => {
   console.log("listening on " + PORT);
 });
