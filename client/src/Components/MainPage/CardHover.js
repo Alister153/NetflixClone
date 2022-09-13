@@ -1,88 +1,142 @@
 import axios from "axios";
 import { AiFillPlayCircle } from "react-icons/ai";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import {
+  IoIosCheckmarkCircleOutline,
+  IoIosRemoveCircleOutline,
+} from "react-icons/io";
 import { BsFillHandThumbsUpFill, BsHandThumbsDownFill } from "react-icons/bs";
 import { FaAngleUp } from "react-icons/fa";
-import { useContext, useRef } from "react";
-import { AllShowInfo } from "../MainPage";
-import { Profile, Scroll } from "../../App";
+import { useContext, useRef, useState } from "react";
+import { List, Profile } from "../../App";
 import { auth } from "../../firebase";
 import { NotificationManager } from "react-notifications";
+import { baseUrl, OriginalimgPATH, YOUTUBE } from "../../url";
+import AllInfo from "./ContextApi";
 
 var trailerTimeout = 0;
-var hoverTimeout = 0;
+
 function MovieHover(props) {
-  const [scroll, setScroll] = useContext(Scroll);
-  const [profile] = useContext(Profile);
-  const placement = document.querySelector(`[data-id="${props.showId[0]}"]`);
+  const [activeProfile] = useContext(Profile);
+  const [
+    showId,
+    setShowId,
+    showDeets,
+    setShowDeets,
+    forDisplayContents,
+    setDisplayContents,
+    hoverCard,
+    setHoverCard,
+  ] = useContext(AllInfo);
+  const list = useContext(List);
+
+  const placement = document.querySelector(`[data-id="${showId}"]`);
   const location = placement.getBoundingClientRect();
   const left = location.left;
+  const isMounted = useRef(false);
 
   var name;
-  name =
-    left < 50
-      ? "from--left"
-      : left > 1000 && "from--right";
-      
+  name = left < 50 ? "from--left" : left > 1000 && "from--right";
+
   const addToList = () => {
     const data = {
       userId: auth.currentUser.uid,
-      name: profile,
-      showId: props.showDeets.id,
-      type: props.showDeets.media_type,
+      name: activeProfile,
+      showId: showDeets.id,
+      type: showDeets.media_type,
     };
 
-    axios
-      .post(`${process.env.REACT_APP_baseServerurl}/profile/add-item`, data)
-      .then((res) => {
-        NotificationManager.success(res.data);
-      });
+    axios.post(`/api/profile/add-item`, data).then((res) => {
+      NotificationManager.success(res.data);
+    });
   };
 
-  if (hoverTimeout) {
-    clearTimeout(hoverTimeout);
-  }
-  if (trailerTimeout) {
-    clearTimeout(trailerTimeout);
-  }
-  // trailerTimeout = setTimeout(() => {
-  //   fetchTrailer(props.showDeets);
-  // }, 1000);
+  const removeFromList = () => {
+    const data = {
+      userId: auth.currentUser.uid,
+      name: activeProfile,
+      showId: showDeets.id,
+      type: showDeets.media_type,
+    };
 
+    axios.post(`/api/profile/remove-item`, data).then((res) => {
+      NotificationManager.success(res.data);
+    });
+  };
+
+  const checkList = () => {
+    return list.some(
+      (d) => d.showId === showDeets.id && d.type === showDeets.media_type
+    );
+  };
+
+  if (props.cardType !== "small") {
+    if (trailerTimeout) {
+      clearTimeout(trailerTimeout);
+    }
+
+    if (!isMounted.current) {
+      trailerTimeout = setTimeout(() => {
+        fetchTrailer(showDeets);
+      }, 1000);
+      isMounted.current = true;
+    }
+  }
   return (
-    <div
-      className={`movieHover ${props.cardType[0]} ${name}`}
-    >
+    <div className={`movieHover ${props.cardType} ${name}`} onClick={() => {
+      clearTimeout(trailerTimeout)
+    }}>
       <figure className="show-trailer">
         <img
-          src={`${process.env.REACT_APP_OriginalimgPATH}${
-            props.cardType[0] === "small"
-              ? props.showDeets.poster_path
-              : props.showDeets.backdrop_path
+          loading="lazy"
+          src={`${OriginalimgPATH}${
+            props.cardType === "small"
+              ? showDeets.poster_path
+              : showDeets.backdrop_path
           }`}
         ></img>
       </figure>
-      <div className="btns">
-        <div>
-          <AiFillPlayCircle size="30px"></AiFillPlayCircle>
-          <IoIosCheckmarkCircleOutline
+      <div className="btns--wrapper">
+        <div className="btns">
+          <AiFillPlayCircle
             size="30px"
-            onClick={addToList}
-          ></IoIosCheckmarkCircleOutline>
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          ></AiFillPlayCircle>
+          {checkList() ? (
+            <IoIosRemoveCircleOutline
+              size="30px"
+              onClick={(e) => {
+                e.stopPropagation();
+                removeFromList();
+              }}
+            />
+          ) : (
+            <IoIosCheckmarkCircleOutline
+              size="30px"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToList();
+              }}
+            ></IoIosCheckmarkCircleOutline>
+          )}
           <span className="like-dislike">
-            <BsFillHandThumbsUpFill size="20px"></BsFillHandThumbsUpFill>
-            <BsHandThumbsDownFill size="20px"></BsHandThumbsDownFill>
+            <BsFillHandThumbsUpFill
+              size="20px"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            ></BsFillHandThumbsUpFill>
+            <BsHandThumbsDownFill
+              size="20px"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            ></BsHandThumbsDownFill>
           </span>
         </div>
         <div className="more-info">
-          <FaAngleUp
-            size="30px"
-            onClick={() => {
-              props.showInfo(props.showDeets);
-              props.showId[1]();
-              setScroll(true);
-            }}
-          ></FaAngleUp>
+          <FaAngleUp size="30px"></FaAngleUp>
         </div>
       </div>
     </div>
@@ -90,23 +144,18 @@ function MovieHover(props) {
 }
 
 export const fetchTrailer = async (show) => {
-  const trailer = await axios.post(
-    `${process.env.REACT_APP_baseServerurl}/movies/get-trailer`,
-    {
-      id: show.id,
-      type: show.media_type,
-    }
-  );
+  const trailer = await axios.post(`/api/movies/get-trailer`, {
+    id: show.id,
+    type: show.media_type,
+  });
   const data = await trailer.data[0];
   document.querySelector(".show-trailer").innerHTML = `<iframe
-    className="trailer"
-    width="100%"
-    height="100%"
+    class="trailer"
     title="Youtube"
     frameborder="0"
     allow="autoplay"
     allowfullscreen
-    src=${process.env.REACT_APP_YOUTUBE}${data.key}?autoplay=1
+    src=${YOUTUBE}${data.key}?autoplay=1
   ></iframe>`;
 };
 export default MovieHover;

@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRef, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { auth } from "../../firebase";
+import { baseUrl } from '../../url'
 import { useNavigate } from "react-router-dom";
 
 const GetStarted = () => {
@@ -48,7 +49,7 @@ const GetStarted = () => {
       password: password,
     };
     axios
-      .post(`${process.env.REACT_APP_baseServerurl}/login/signup`, data)
+      .post(`/api/login/signup`, data)
       .then((res) => {
         NotificationManager.success(res.data);
         nextSlide(e);
@@ -63,7 +64,6 @@ const GetStarted = () => {
   const signIn = () => {
     signInWithEmailAndPassword(auth, sessionStorage.getItem("email"), password)
       .then((userCred) => {
-        const user = userCred.user;
         navigate("/");
         NotificationManager.success("Logged In");
       })
@@ -94,35 +94,31 @@ const GetStarted = () => {
             <p>Just another step and you're done!</p>
             <p>Netflix clone is personalized for you.</p>
           </div>
-          <div
-            className={`password ${passActive && "active"}`}
-            onClick={() => {
-              if (password.length === 0) {
-                setPassActive(!passActive);
-              }
-            }}
-          >
-            <div>
+          <div className={`password ${passActive && "active"}`}>
+            <label
+              onClick={() => {
+                if (password.length === 0) {
+                  setPassActive(!passActive);
+                }
+              }}
+            >
               <p className="placeholder">Password</p>
-              <label>
-                <input
-                  type={passVisibility ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => {
-                    if (passActive) setPassword(e.target.value);
-                  }}
-                ></input>
-                <p
-                  className="pass-vis"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setPassVisibility(!passVisibility);
-                  }}
-                >
-                  {passVisibility ? "HIDE" : "SHOW"}
-                </p>
-              </label>
-            </div>
+              <input
+                type={passVisibility ? "text" : "password"}
+                value={password}
+                onChange={(e) => {
+                  if (passActive) setPassword(e.target.value);
+                }}
+              ></input>
+              <p
+                className="pass-vis"
+                onClick={() => {
+                  setPassVisibility(!passVisibility);
+                }}
+              >
+                {passVisibility ? "HIDE" : "SHOW"}
+              </p>
+            </label>
           </div>
           <div className="nxt-btn">
             <button onClick={handleClick}>Next</button>

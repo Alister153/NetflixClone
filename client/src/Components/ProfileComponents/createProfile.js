@@ -4,6 +4,7 @@ import { usePalette } from "react-palette";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { auth } from "../../firebase";
+import { baseUrl } from "../../url";
 
 var imgTimeout = 0;
 const CreateProfile = () => {
@@ -22,14 +23,9 @@ const CreateProfile = () => {
       userId: auth.currentUser.uid,
     };
 
-    axios
-      .post(
-        `${process.env.REACT_APP_baseServerurl}/profile/create-profile`,
-        data
-      )
-      .then((res) => {
-        navigate("/");
-      });
+    axios.post(`/api/profile/create-profile`, data).then((res) => {
+      navigate("/");
+    });
   };
   const animateImage = () => {
     const img = profileImg.current;
@@ -92,22 +88,19 @@ const CreateProfile = () => {
           <div></div>
         </div>
         <div className="input-fields--wrapper">
-          <div>
-            <label className={ProfileActive && "active"}>
-              <p>Profile</p>
-              <input
-                type="text"
-                value={ProfileName}
-                onChange={(e) => {
-                  if (ProfileActive) setProfileName(e.target.value);
-                }}
-                onClick={(e) => {
-                  if (ProfileName.length === 0)
-                    setProfileActive(!ProfileActive);
-                }}
-              ></input>
-            </label>
-          </div>
+          <label className={ProfileActive && "active"}>
+            <p>Profile</p>
+            <input
+              type="text"
+              value={ProfileName}
+              onChange={(e) => {
+                if (ProfileActive) setProfileName(e.target.value);
+              }}
+              onClick={(e) => {
+                if (ProfileName.length === 0) setProfileActive(!ProfileActive);
+              }}
+            ></input>
+          </label>
           <div className="btn-wrapper">
             <button
               className="cancel"

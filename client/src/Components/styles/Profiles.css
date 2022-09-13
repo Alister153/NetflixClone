@@ -5,6 +5,9 @@
 }
 .logo {
   height: 10vh;
+  padding: 0px 10px;
+  display: flex;
+  align-items: center;
   background: linear-gradient(180deg, black, #141414);
 }
 .logo div img {
@@ -29,43 +32,64 @@
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
+  min-height: 400px;
+  margin: 15px;
   cursor: pointer;
 }
-.Profiles--wrapper .profiles .profiles--wrapper{
+.Profiles--wrapper .profile {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   flex-wrap: wrap;
-  width: 55%;
+  width: 100%;
+  margin: 15px 0px;
 }
-.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper{
-  width: 150px;
-  text-align: center;
-  margin: 5px;
-}
-.Profiles--wrapper .profiles figure {
+.Profiles--wrapper .profiles .profiles--wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  width: 55%;
+  height: 100%;
+}
+.Profiles--wrapper .img-wrapper {
+  text-align: center;
+  margin: 5px;
+  min-width: 150px;
+  width: 150px;
+  max-width: 150px;
+  min-height: 150px;
+  height: 150px;
+  max-height: 150px;
+}
+.Profiles--wrapper figure {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
   border-radius: 5px;
 }
-.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper figure img {
+.Profiles--wrapper .img-wrapper figure img {
   width: 100%;
   height: 100%;
   border-radius: 5px;
   border: 2px solid transparent;
 }
-.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper:hover img{
+.Profiles--wrapper .img-wrapper:hover img {
   border: 2px solid rgb(202, 202, 202);
 }
-.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper .user {
+.Profiles--wrapper .profile .img-wrapper:hover img {
+  border: none;
+}
+.Profiles--wrapper .img-wrapper .user {
   color: grey;
   filter: brightness(60%);
 }
-.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper:hover .user {
+.Profiles--wrapper .img-wrapper:hover .user {
   filter: brightness(100%);
 }
-.Profiles--wrapper button {
+.Profiles--wrapper .manage,
+button.cancel,
+button.delete {
   filter: brightness(60%);
   cursor: pointer;
   background-color: transparent;
@@ -74,27 +98,53 @@
   font-size: 20px;
   border: 2px solid gray;
 }
-.Profiles--wrapper button:hover {
+.Profiles--wrapper .manage:hover,
+button.cancel:hover,
+button.delete:hover {
   filter: brightness(100%);
 }
-
-.Profiles--wrapper .n.profiles {
-  justify-content: center;
-}
-.Profiles--wrapper .n.profiles > div .new-profile {
+.Profiles--wrapper .new-profile--wrapper .new-profile {
   display: flex;
   justify-content: center;
   align-items: center;
   border: 3px solid gray;
-  margin-bottom: 5px;
-  filter: brightness(60%);
+  height: 100%;
 }
-.Profiles--wrapper .n.profiles > div:hover .new-profile {
+.Profiles--wrapper .new-profile--wrapper:hover {
   filter: brightness(100%);
 }
-.Profiles--wrapper .n.profiles > div .new-profile p {
+.Profiles--wrapper .new-profile--wrapper .new-profile p {
   font-size: 100px;
   color: gray;
+}
+.Profiles--wrapper .profiles .profiles--wrapper .img-wrapper .edit-icon {
+  background-color: rgba(0, 0, 0, 0.394);
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+}
+.Profiles--wrapper .done,
+button.save {
+  background-color: white;
+  color: black;
+  font-size: 20px;
+  padding: 5px 20px;
+}
+.Profiles--wrapper .done:hover,
+button.save:hover {
+  background-color: red;
+  color: white;
+}
+.language-options span {
+  display: none;
+}
+.language-options.active span {
+  display: block;
+}
+.profile .img-wrapper {
+  position: relative;
+  margin: 0px;
 }
 .create-profile-wrapper {
   height: 80vh;
@@ -102,12 +152,14 @@
   align-items: center;
   justify-content: space-evenly;
 }
-.create-profile-wrapper .profile-image--wrapper {
+
+.profile-image--wrapper {
   position: relative;
   width: 200px;
   border: none;
+  height: 260px;
 }
-.create-profile-wrapper .profile-image--wrapper figure {
+.profile-image--wrapper figure {
   position: relative;
   width: 200px;
   height: 220px;
@@ -115,7 +167,7 @@
   background-color: #141414;
   cursor: pointer;
 }
-.create-profile-wrapper .profile-image--wrapper figure:hover::after {
+.profile-image--wrapper figure:hover::after {
   content: "Select";
   position: absolute;
   display: flex;
@@ -128,19 +180,19 @@
   font-size: xx-large;
   background-color: rgba(0, 0, 0, 0.397);
 }
-.create-profile-wrapper .profile-image--wrapper figure img{
+.profile-image--wrapper figure img {
   width: 100%;
   height: 100%;
 }
-.create-profile-wrapper .profile-image--wrapper figure img.on {
+.profile-image--wrapper figure img.on {
   animation: image-vis 200ms ease;
 }
-.create-profile-wrapper .profile-image--wrapper figure img.off {
+.profile-image--wrapper figure img.off {
   opacity: 0;
   box-shadow: none !important;
   animation: image-unvis 200ms ease;
 }
-.create-profile-wrapper .profile-image--wrapper .all-images {
+.profile-image--wrapper .all-images {
   position: absolute;
   top: 0%;
   left: 110%;
@@ -154,38 +206,22 @@
   border: 1px solid grey;
   border-radius: 2px;
 }
-.create-profile-wrapper
-  .profile-image--wrapper
-  .all-images
-  .all-images--wrapper {
+.profile-image--wrapper .all-images .all-images--wrapper {
   display: flex;
   flex-wrap: wrap;
   min-width: 260px;
   animation-delay: 1000s;
   animation: image-vis 2s ease;
 }
-.create-profile-wrapper
-  .profile-image--wrapper
-  .all-images
-  .all-images--wrapper
-  div {
+.profile-image--wrapper .all-images .all-images--wrapper div {
   width: 60px;
   position: relative;
   margin: 5px 5px;
 }
-.create-profile-wrapper
-  .profile-image--wrapper
-  .all-images
-  .all-images--wrapper
-  div
-  img {
+.profile-image--wrapper .all-images .all-images--wrapper div img {
   width: 100%;
 }
-.create-profile-wrapper
-  .profile-image--wrapper
-  .all-images
-  .all-images--wrapper
-  div:hover::after {
+.profile-image--wrapper .all-images .all-images--wrapper div:hover::after {
   content: "Select";
   cursor: pointer;
   position: absolute;
@@ -234,24 +270,29 @@
   height: 200px;
 }
 .create-profile-wrapper .input-fields--wrapper label {
-  display: block;
+  display: flex;
+  align-items: center;
   position: relative;
   border: 1px solid grey;
   height: 50px;
   width: 220px;
+  padding: 5px 20px;
   border-radius: 3px;
 }
 .create-profile-wrapper .input-fields--wrapper label p {
   position: absolute;
-  top: 0;
+  font-size: 15px;
+  width: 70%;
+  top: 0%;
   left: 0%;
-  transform: translateX(10px) translateY(100%);
-  transition: transform 400ms ease, font 400ms ease;
+  transform: translateX(13%) translateY(15px);
   color: grey;
+  background-color: transparent;
+  transition: transform 300ms ease, font 300ms ease;
 }
 .create-profile-wrapper .input-fields--wrapper label.active p {
-  font-size: 10px;
-  transform: translateX(10px) translateY(50%);
+  font-size: 12px;
+  transform: translateX(13%) translateY(0px);
 }
 .create-profile-wrapper .input-fields--wrapper input {
   background-color: transparent;
@@ -259,7 +300,6 @@
   outline: none;
   width: 100%;
   height: 100%;
-  padding: 5px 0px 0px 10px;
 }
 .create-profile-wrapper .input-fields--wrapper .btn-wrapper button {
   padding: 10px 20px;
@@ -269,17 +309,59 @@
   height: 50px;
   font-size: 15px;
   cursor: pointer;
+  margin: 5px;
 }
 .create-profile-wrapper .input-fields--wrapper .btn-wrapper .cancel {
   background-color: transparent;
   border: 3px solid grey;
   border-radius: 2px;
+  margin: 5px;
 }
 .create-profile-wrapper .input-fields--wrapper .btn-wrapper .save {
   background-color: red;
   border: none;
   border-radius: 2px;
+  margin: 5px;
 }
 .create-profile-wrapper .input-fields--wrapper .btn-wrapper button:active {
   filter: brightness(50%);
+}
+
+@media only screen and (max-width: 900px) {
+  .Profiles--wrapper .profiles .profiles--wrapper {
+    width: 90%;
+  }
+  .Profiles--wrapper .img-wrapper {
+    min-width: 100px;
+    width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+    height: 100px;
+    max-height: 100px;
+  }
+  .create-profile-wrapper {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .create-profile-wrapper .profile-image--wrapper .all-images {
+    left: 0%;
+    top: 50%;
+    transform: translateX(-10px);
+  }
+  @keyframes all-image {
+    0% {
+      width: 220px;
+      height: 0px;
+    }
+    100% {
+      width: 220px;
+      height: 200px;
+    }
+  }
+  .Profiles--wrapper .profile {
+    flex-direction: column;
+  }
 }

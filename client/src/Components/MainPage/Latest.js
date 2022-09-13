@@ -5,45 +5,44 @@ import Categories from "./Sections";
 import DisplayContents from "../MainPage/DisplayContent";
 import MovieHover from "../MainPage/CardHover";
 import LoadingSkeleton from "../LoadingSkeleton";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 const Latest = () => {
+  const display = sessionStorage.getItem("displayContents");
   const [showDeets, setShowDeets] = useState();
   const [showId, setShowId] = useState();
-  const [showInfo, setShowInfo] = useState();
-  const [hoverCardType, setHoveredCardType] = useState("");
   const [hoverCard, setHoverCard] = useState(0);
   const [Movies, setMovies] = useState();
   const [Tv, setTv] = useState();
+  const [forDisplayContents, setDisplayContents] = useState(
+    display && JSON.parse(display)
+  );
 
   const get_data = () => {
-    axios
-      .post(`${process.env.REACT_APP_baseServerurl}/movies/latest`)
-      .then((res) => {
-        setMovies(res.data.movie);
-        setTv(res.data.tv);
-      });
+    axios.post(`/api/movies/latest`).then((res) => {
+      setMovies(res.data.movie);
+      setTv(res.data.tv);
+    });
   };
 
   useEffect(() => {
     get_data();
   }, []);
   return (
-    <div className="page--wrapper">
-      <div className="moviesCategories">
-        <AllInfo.Provider
-          value={[
-            showId,
-            setShowId,
-            showDeets,
-            setShowDeets,
-            showInfo,
-            setShowInfo,
-            hoverCardType,
-            setHoveredCardType,
-            hoverCard,
-            setHoverCard,
-          ]}
-        >
+    <div className="page--wrapper p-10">
+      <AllInfo.Provider
+        value={[
+          showId,
+          setShowId,
+          showDeets,
+          setShowDeets,
+          forDisplayContents,
+          setDisplayContents,
+          hoverCard,
+          setHoverCard,
+        ]}
+      >
+        <div className="moviesCategories">
           {Tv ? (
             Object.keys(Tv).map((t) => {
               return (
@@ -56,8 +55,8 @@ const Latest = () => {
           ) : (
             <LoadingSkeleton
               number={8}
-              height={330}
               width={200}
+              height={350}
             ></LoadingSkeleton>
           )}
           {Movies ? (
@@ -76,14 +75,16 @@ const Latest = () => {
             <div className="mt-20">
               <LoadingSkeleton
                 number={8}
-                height={330}
                 width={200}
+                height={350}
               ></LoadingSkeleton>
             </div>
           )}
-        </AllInfo.Provider>
-      </div>
-      {showInfo && <DisplayContents showInfo={[showInfo, setShowInfo]} />}
+        </div>
+        <Routes>
+          <Route path={`/content=:id`} element={<DisplayContents />}></Route>
+        </Routes>
+      </AllInfo.Provider>
     </div>
   );
 };

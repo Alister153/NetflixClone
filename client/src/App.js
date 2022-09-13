@@ -1,10 +1,6 @@
 import "./App.css";
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  useNavigate,
-  useRoutes,
-} from "react-router-dom";
+import { createContext, useEffect, useRef, useState } from "react";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import Profiles from "./Components/Profiles";
@@ -13,25 +9,35 @@ import Search from "./Components/Search/Search";
 import Navbar from "./Components/MainPage/Navbar";
 import Signup from "./Components/Signup";
 import axios from "axios";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 import GetStarted from "./Components/SignComponents/GetStarted";
 import CreateProfile from "./Components/ProfileComponents/createProfile";
 import Genre from "./Components/MainPage/Genre";
 import Latest from "./Components/MainPage/Latest";
 import MyList from "./Components/MainPage/MyList";
+import { baseUrl } from "./url";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
+import EditProfile from "./Components/ProfileComponents/editProfile";
 
 const PagesRoutes = (props) =>
   useRoutes([
     {
       path: "/",
-      element:
-        props.value[0] && props.value[1] ? (
-          <MainPage></MainPage>
-        ) : props.value[1] && props.value[2] ? (
-          <Profiles></Profiles>
-        ) : (
-          <Signup></Signup>
-        ),
+      element: props.value[0] ? <Profiles></Profiles> : <Signup></Signup>,
+    },
+    {
+      path: "/Manage",
+      element: props.value[0] && <EditProfile></EditProfile>,
+    },
+    {
+      path: "/browse/*",
+      element: <MainPage></MainPage>,
     },
     {
       path: "/get-started",
@@ -39,22 +45,22 @@ const PagesRoutes = (props) =>
     },
     {
       path: "/create",
-      element: props.value[1] && <CreateProfile></CreateProfile>,
+      element: <CreateProfile></CreateProfile>,
     },
     {
-      path: `/search`,
-      element: props.value[0] && props.value[1] && <Search></Search>,
+      path: "/search/*",
+      element: props.value[0] && <Search></Search>,
     },
     {
-      path: "/genre/:genre",
+      path: "/genre/:genre/*",
       element: <Genre></Genre>,
     },
     {
-      path: "/latest",
+      path: "/latest/*",
       element: <Latest></Latest>,
     },
     {
-      path: "/my-list",
+      path: "/my-list/*",
       element: <MyList></MyList>,
     },
   ]);
@@ -65,70 +71,96 @@ export const ScreenWidth = createContext();
 export const search = createContext();
 export const Scroll = createContext();
 export const validate = createContext();
+export const List = createContext();
 
 function App() {
   const [screen, setScreen] = useState(window.innerWidth);
   const [signIn, setSignIn] = useState(localStorage.getItem("SignIn"));
-  const [profile, setProfile] = useState(localStorage.getItem("activeProfile"));
+  const [activeProfile, setActiveProfile] = useState(
+    localStorage.getItem("activeProfile")
+  );
   const [Allprofiles, setAllProfiles] = useState();
-  const [isLoading, setIsLoading] = useState(true);
   const [searchContent, setSearchContent] = useState();
   const [scroll, setScroll] = useState(false);
+  const [list, setList] = useState();
+  const isMounted = useRef(false);
   window.addEventListener("resize", () => {
     setScreen(window.innerWidth);
   });
-
-  useEffect(() => {
-    document.getElementById("root").classList.toggle("overflow");
-  }, [scroll]);
 
   const getProfiles = async () => {
     const data = {
       userId: auth.currentUser.uid,
     };
-    axios
-      .post(`${process.env.REACT_APP_baseServerurl}/profile/get-profiles`, data)
-      .then((res) => {
-        setAllProfiles(res.data);
+    axios.post(`/api/profile/get-profiles`, data).then((res) => {
+      setAllProfiles(res.data);
+    });
+    const ref = collection(db, auth.currentUser.uid);
+    onSnapshot(ref, (res) => {
+      var data = [];
+      res.forEach((profile) => {
+        data.push({ name: profile.id, data: profile.data() });
       });
+      setAllProfiles(data);
+    });
   };
+
+  useEffect(() => {
+    if (isMounted.current)
+      document.getElementById("root").classList.toggle("overflow");
+    else isMounted.current = false;
+  }, [scroll]);
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       if (user) {
-        getProfiles().then(() => setIsLoading(false));
         setSignIn(true);
+        getProfiles();
       } else {
         setSignIn(false);
         setAllProfiles();
-        setProfile(
+        setActiveProfile(
           localStorage.getItem("activeProfile") !== "null"
             ? localStorage.getItem("activeProfile")
             : null
         );
         localStorage.removeItem("activeProfile");
         localStorage.removeItem("SignIn");
+        localStorage.removeItem("uid");
+        setList();
       }
     });
   }, []);
+
+  useEffect(() => {
+    if (activeProfile && localStorage.getItem("uid")) {
+      const ref = doc(db, localStorage.getItem("uid"), activeProfile);
+      getDoc(ref).then((data) => {
+        setList(data.data().list);
+      });
+      onSnapshot(ref, (snap) => {
+        setList(snap.data().list);
+      });
+    }
+  }, [activeProfile]);
 
   return (
     <>
       <ScreenWidth.Provider value={screen}>
         <validate.Provider value={[signIn, setSignIn]}>
-          <Profile.Provider value={[profile, setProfile]}>
+          <Profile.Provider value={[activeProfile, setActiveProfile]}>
             <ProfilesData.Provider value={[Allprofiles, setAllProfiles]}>
-              <search.Provider value={[searchContent, setSearchContent]}>
-                <Scroll.Provider value={[scroll, setScroll]}>
+              <Scroll.Provider value={[scroll, setScroll]}>
+                <search.Provider value={[searchContent, setSearchContent]}>
                   <NotificationContainer />
-                  <Router>
-                    {profile && signIn && <Navbar></Navbar>}
-                    <PagesRoutes
-                      value={[profile, signIn, Allprofiles]}
-                    ></PagesRoutes>
-                  </Router>
-                </Scroll.Provider>
-              </search.Provider>
+                  <List.Provider value={list}>
+                    <Router>
+                      {activeProfile && signIn && <Navbar></Navbar>}
+                      <PagesRoutes value={[signIn]}></PagesRoutes>
+                    </Router>
+                  </List.Provider>
+                </search.Provider>
+              </Scroll.Provider>
             </ProfilesData.Provider>
           </Profile.Provider>
         </validate.Provider>

@@ -14,6 +14,13 @@ ul {
   bottom: 0%;
   background-color: rgba(0, 0, 0, 0.555);
 }
+input:focus {
+  outline: none;
+}
+.page--wrapper .overlay,
+.search-results .overlay {
+  z-index: 99;
+}
 .page--wrapper {
   color: #c6c6c6;
   height: 10%;
@@ -32,7 +39,7 @@ ul {
   width: 50%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 .navbar .logo-category figure {
   height: 25px;
@@ -271,7 +278,7 @@ ul {
 }
 .navbar .nav-menu {
   position: fixed;
-  top: 10%;
+  top: 11%;
   bottom: 0%;
   left: 0%;
   right: 100%;
@@ -284,6 +291,30 @@ ul {
 .navbar .nav--wrapper .overlay {
   z-index: -1;
 }
+.nav-side-slider {
+  position: absolute;
+  background-color: red;
+  transition: transform 400ms ease;
+  top: 0%;
+  width: 3px;
+  height: 32px;
+}
+.home[data-active="true"] ~ .nav-side-slider {
+  transform: translateY(0px);
+}
+.list[data-active="true"] ~ .nav-side-slider {
+  transform: translateY(32px);
+}
+.tv[data-active="true"] ~ .nav-side-slider {
+  transform: translateY(64px);
+}
+.movies[data-active="true"] ~ .nav-side-slider {
+  transform: translateY(98px);
+}
+.latest[data-active="true"] ~ .nav-side-slider {
+  transform: translateY(130px);
+}
+/* -------- */
 
 .page--wrapper {
   height: fit-content;
@@ -297,8 +328,43 @@ ul {
   min-height: 382px;
 }
 .moviesCategories .title {
+  position: relative;
   width: fit-content;
 }
+.moviesCategories .categories .title h1:first-child {
+  position: relative;
+  z-index: 2;
+  background-color: #141414;
+}
+.moviesCategories .categories .title .explore {
+  position: absolute;
+  color: #54b9c5;
+  text-shadow: 0px 0px 10px #54b9c5;
+  z-index: 1;
+  top: 0%;
+  right: 0%;
+  transform: translateY(50%);
+  opacity: 0;
+  transition: opacity 500ms ease, transform 1500ms ease;
+}
+.moviesCategories .categories .title .explore.active {
+  transform: translateX(110%) translateY(50%);
+  opacity: 1;
+}
+.moviesCategories .categories .title span {
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  opacity: 0;
+  transform: translateX(0px) translateY(50%);
+  color: #54b9c5;
+  transition: opacity 300ms ease, transform 1000ms ease;
+}
+.moviesCategories .categories .title .explore.active ~ span {
+  opacity: 1;
+  transform: translateX(95px) translateY(50%);
+}
+
 .moviesCategories .categories .movies {
   height: 100%;
 }
@@ -313,6 +379,7 @@ ul {
 }
 .card {
   position: relative;
+  cursor: pointer;
 }
 .moviesCategories .movies .row1 .card {
   min-width: 30%;
@@ -338,6 +405,7 @@ ul {
   top: 0%;
   left: 0%;
   right: 0%;
+  bottom: -20%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -355,7 +423,7 @@ ul {
   width: 100%;
   height: 100%;
 }
-.movieHover .btns {
+.movieHover .btns--wrapper {
   width: 90%;
   height: 20%;
   padding: 10px;
@@ -363,68 +431,52 @@ ul {
   justify-content: space-between;
   align-items: center;
 }
-.movieHover .btns div {
+.movieHover .btns--wrapper .btns {
+  width: 80%;
   display: flex;
   align-items: center;
 }
-.movieHover .btns .like-dislike {
-  width: 50%;
-}
-.movieHover .btns div svg {
+.movieHover .btns--wrapper .btns svg {
   margin: 0px 5px;
   filter: brightness(50%);
   transition: filter 200ms ease;
 }
-.movieHover .btns div svg:hover {
+.movieHover .btns--wrapper .btns svg:hover {
   filter: brightness(100%);
 }
-.movieHover .btns div .like-dislike {
-  /* position: relative; */
+.movieHover .btns--wrapper .btns .like-dislike {
+  position: relative;
   transform: scale(1);
-  width: 0%;
+  display: flex;
+  align-items: center;
+  width: 50px;
   padding: 5px 5px 5px 5px;
   border-radius: 60px;
   transition: border 500ms ease, transform 500ms ease, width 500ms ease,
     background-color 500ms ease;
 }
-.movieHover .btns div .like-dislike:hover {
-  width: 80px;
-  background-color: rgb(31, 31, 31);
-  transform: scale(1.1);
+.movieHover .btns--wrapper .btns .like-dislike:hover {
+  width: 100px;
+  background-color: #202020;
 }
-.movieHover .btns div .like-dislike svg:nth-child(1) {
-  visibility: visible;
-  padding: 0px;
-}
-.movieHover .btns div .like-dislike svg:nth-child(2) {
+.movieHover .btns--wrapper .btns .like-dislike svg:nth-child(2) {
   position: absolute;
-  top: 15%;
-  left: 30%;
-  padding: 0px;
+  right: 10%;
   opacity: 0;
-  transform: translateX(0px);
-  transition: left 500ms ease, transform 500ms ease, opacity 500ms ease;
+  transition: right 400ms ease, opacity 400ms ease;
 }
-.movieHover .btns div .like-dislike:hover svg:nth-child(2) {
-  left: 100%;
+.movieHover .btns--wrapper .btns .like-dislike:hover svg:nth-child(2) {
+  position: absolute;
   opacity: 1;
-  transform: translateX(-45px);
+  right: 10%;
 }
+
 /* Medium card hover */
 .movieHover.medium {
   transform: scale(1);
 }
 .movieHover.medium:hover {
   transform: scale(1.2);
-}
-.movieHover.medium .btns {
-  width: 90%;
-}
-.movieHover.medium .btns .like-dislike {
-  width: 80%;
-}
-.movieHover .btns div .like-dislike:hover {
-  width: 80px;
 }
 /* -------- */
 
@@ -436,36 +488,16 @@ ul {
   opacity: 1;
   transform: scale(1.2);
 }
-.movieHover.small .btns div:nth-child(1) {
+.movieHover.small .btns--wrapper .btns {
   position: relative;
-  width: 100%;
 }
-.movieHover.small .btns div .like-dislike {
+.movieHover.small .btns--wrapper .btns .like-dislike {
   position: absolute;
-  z-index: 1;
-  padding: 15px;
-  left: 75%;
+  right: 0%;
+  flex-direction: row-reverse;
 }
-.movieHover.small .btns div .like-dislike:hover {
-  width: 70px;
-}
-.movieHover.small .btns div:nth-child(1) span svg {
-  position: absolute;
-  top: 0%;
-  left: 5%;
-  transform: translateY(25%) translateX(0px);
-  transition: transform 500ms ease, right 500ms ease;
-}
-.movieHover.small .btns div:nth-child(1) span:hover svg:nth-child(1) {
-  transform: translateY(25%) translateX(0px);
-}
-.movieHover.small .btns div:nth-child(1) span svg:nth-child(2) {
-  position: absolute;
-  left: 50%;
-  transform: translateY(25%) translateX(0%);
-}
-.movieHover.small .btns div:nth-child(1) span:hover svg:nth-child(2) {
-  transform: translateY(25%) translateX(0%);
+.movieHover.small .btns--wrapper .btns .like-dislike svg:nth-child(2) {
+  right: 60%;
 }
 /* -------- */
 
@@ -499,22 +531,6 @@ ul {
 }
 
 /* Slider */
-.movieHover .nxt-btn {
-  cursor: pointer;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  top: 0%;
-  left: 100%;
-  bottom: 0%;
-  background: linear-gradient(
-    90deg,
-    transparent 5%,
-    rgba(0, 0, 0, 0.527),
-    black
-  );
-  transform: translateX(-40px);
-}
 .show-trailer {
   position: relative;
 }
@@ -528,15 +544,13 @@ ul {
   height: 100%;
   border-radius: 5px 5px 0px 0px;
 }
-.moviesCategories .movies .show-trailer .trailer {
+.show-trailer .trailer {
   cursor: pointer;
   position: absolute;
   top: 0%;
   left: 0%;
   width: 100% !important;
   height: 100% !important;
-  width: 100%;
-  height: 100%;
 }
 .moviesCategories .movies .row3 .movieHover .show-trailer {
   height: 70%;
@@ -566,6 +580,9 @@ ul {
   left: 0%;
   right: 0%;
   top: 0%;
+  height: 500px;
+  background-color: black;
+  overflow: hidden;
 }
 .more--info .show-trailer img {
   width: 100%;
@@ -577,7 +594,7 @@ ul {
   background: linear-gradient(180deg, transparent, #141414 5%);
   z-index: 1;
   padding: 50px 30px;
-  top: 400px;
+  top: 370px;
   left: 0%;
   right: 0%;
 }
@@ -590,12 +607,69 @@ ul {
 .more--info .details > * {
   margin: 5px 0px;
 }
-.more--info .details div:nth-child(1) {
-  width: 30%;
+.more--info .details .ratings-date-type {
+  width: 200px;
   display: flex;
   justify-content: space-between;
 }
-.more--info .details div:nth-child(2) * {
+.more--info .details .btns--wrapper {
+  width: 90%;
+  height: 20%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.more--info .details .btns--wrapper .btns {
+  width: 80%;
+  display: flex;
+  align-items: center;
+}
+.more--info .details .btns--wrapper .btns svg {
+  margin: 0px 5px;
+  filter: brightness(50%);
+  transition: filter 200ms ease;
+}
+.more--info .details .btns--wrapper .btns svg:hover {
+  filter: brightness(100%);
+}
+.more--info .details .btns--wrapper .btns .like-dislike {
+  position: relative;
+  transform: scale(1);
+  display: flex;
+  align-items: center;
+  width: 50px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 60px;
+  transition: border 500ms ease, transform 500ms ease, width 500ms ease,
+    background-color 500ms ease;
+}
+.more--info .details .btns--wrapper .btns .like-dislike:hover {
+  position: relative;
+  width: 100px;
+  transform: scale(1.1);
+  background-color: #202020;
+}
+.more--info .details .btns--wrapper .btns .like-dislike svg {
+  margin: 0px 5px;
+}
+.more--info .details .btns--wrapper .btns .like-dislike svg:nth-child(1) {
+  position: relative;
+  opacity: 5;
+  z-index: 2;
+}
+.more--info .details .btns--wrapper .btns .like-dislike svg:nth-child(2) {
+  position: absolute;
+  z-index: 1;
+  right: 50%;
+  opacity: 0;
+  transition: right 500ms ease, opacity 500ms ease;
+}
+.more--info .details .btns--wrapper .btns .like-dislike:hover svg:nth-child(2) {
+  opacity: 1;
+  right: 10%;
+}
+.more--info .details .overview * {
   margin: 10px 0px;
 }
 .more--info .recommendations .movies {
@@ -613,11 +687,10 @@ ul {
   border-radius: 5px 5px 0px 0px;
 }
 .more--info .recommendations .movies .recomend-movie-wrapper {
-  width: 30%;
+  width: 240px;
   background: linear-gradient(-180deg, transparent, rgb(41, 41, 41));
   border-radius: 5px;
-  min-height: 350px;
-  height: 350px;
+  min-height: 355px;
   margin: 10px;
   transition: transform 500ms ease;
 }
@@ -627,22 +700,15 @@ ul {
 .more--info .recommendations .movies .recomend-movie-wrapper h2 {
   font-size: large;
 }
-.more--info .recommendations .movies .recomend-movie-wrapper p {
+.more--info .recommendations .movies .recomend-movie-wrapper p,
+.more--info .details-recommends .details p {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 4;
   overflow: hidden;
 }
 .more--info .recommendations .movies .recomend-movie-wrapper div:first-child {
-  max-height: 40%;
-}
-.more--info
-  .recommendations
-  .movies
-  .recomend-movie-wrapper
-  div:first-child
-  img {
-  height: 100%;
+  max-height: 100%;
 }
 .more--info .details-recommends .credits > * {
   margin: 10px 0px;
@@ -679,7 +745,7 @@ ul {
   align-items: center;
   position: absolute;
   left: 90%;
-  right: 0%;
+  right: -40px;
   top: 10px;
   bottom: 10px;
   background: linear-gradient(to right, transparent, #0c0c0cc4, black);
@@ -701,8 +767,8 @@ ul {
   justify-content: start;
 }
 .search-results .shows-list .card {
-  width: 220px;
-  height: 340px;
+  width: 15%;
+  height: fit-content;
   margin: 20px 5px;
 }
 .search-results .shows-list .card figure,
@@ -760,16 +826,19 @@ ul {
   position: relative;
 }
 
-@media only screen and (max-width: 1300px) {
+@media only screen and (max-width: 1100px) {
   .navbar .logo-category figure {
     height: 20px;
   }
   .navbar .logo-category {
     font-size: 13px;
-    width: none;
+    width: 20%;
   }
   .navbar .logo-category ul {
     width: 80%;
+  }
+  .navbar .logo-category .browse ul {
+    display: none;
   }
   .navbar .search-profile {
     width: 50%;
@@ -780,68 +849,72 @@ ul {
   .navbar .search-profile ul .search-container input[type="search"] {
     font-size: 10px;
   }
-  /* .movi */
-}
-
-@media only screen and (max-width: 900px) {
-  .navbar {
-    padding: 0px 10px;
-  }
-  .navbar .logo-category {
-    width: 20%;
-  }
   .navbar .logo-category .browse {
     position: relative;
     cursor: pointer;
   }
-  .navbar .logo-category .browse ul {
-    display: none;
+  .more--info {
+    margin: 0%;
   }
-  .navbar .logo-category .browse.active ul {
-    position: absolute;
-    z-index: 90;
-    display: block;
-    transform: translateY(20px) translateX(30px);
-    top: 100%;
-    right: 100%;
-    transform: translateX(70%) translateY(5%);
-    width: 200px;
-    text-align: center;
-    border-top: 1px solid white;
-    border-right: 0.01em solid gray;
-    border-left: 0.01em solid gray;
-    border-bottom: 0.01em solid gray;
-    flex-direction: column;
+  .more--info .details-recommends {
+    top: 170px;
+    background: linear-gradient(180deg, transparent, #141414 1%);
   }
-  .navbar .logo-category .browse.active ul li {
-    line-height: 3rem;
-    background-color: rgba(0, 0, 0, 0.8);
+  .more--info .recommendations .movies .recomend-movie-wrapper {
+    width: 350px;
   }
-  .navbar .logo-category .browse.active ul li:hover {
-    background-color: rgba(0, 0, 0, 0.675);
+  .more--info .recommendations .movies .recomend-movie-wrapper:hover {
+    transform: none;
   }
-  .navbar .search-profile {
+  .more--info .details .btns--wrapper .btns .like-dislike {
+    width: 90px;
+    padding: 5px;
+    position: static;
+    justify-content: space-between;
+    background-color: #202020;
+  }
+  .more--info .details .btns--wrapper .btns .like-dislike:hover {
+    position: static;
+    width: 90px;
+    transform: scale(1);
+  }
+  .more--info .details .btns--wrapper .btns .like-dislike svg {
+    margin: 0px 5px;
+  }
+  .more--info .details .btns--wrapper .btns .like-dislike svg:nth-child(1) {
+    position: static;
+  }
+  .more--info .details .btns--wrapper .btns .like-dislike svg:nth-child(2) {
+    position: static;
+    opacity: 1;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .navbar {
+    padding: 0px 10px;
+  }
+  .navbar .logo-category {
     width: 35%;
-  }
-  .navbar .search-profile ul .search-container.active .search--wrapper {
-    left: 0%;
-    width: 150px;
   }
   .moviesCategories .categories:not(:first-child) {
     min-height: 100px;
     height: 100%;
     max-height: 20%;
   }
-  .Profiles--wrapper .profiles .profiles--wrapper {
-    width: 90%;
-  }
-  .Profiles--wrapper .profiles .profiles--wrapper .img-wrapper {
-    width: 90px;
-  }
-  .page--wrapper .moviesCategories .categories .movies{
+  .page--wrapper .categories .movies {
     height: 200px;
   }
-  .page--wrapper .moviesCategories .categories .movies .card{
-    min-width: 30% !important;
+  .page--wrapper .categories .movies .card {
+    min-width: 45% !important;
+  }
+  .more--info {
+    width: 100%;
+  }
+  .shows-list .card {
+    width: 45% !important;
+  }
+  .more--info  .show-trailer{
+    height: 250px;
   }
 }

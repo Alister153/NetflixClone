@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 const axios = require("axios");
 const firebase = require("../firebase.js");
-const { GiEmberShot } = require("react-icons/gi");
 const admin = firebase.admin;
 const db = firebase.db;
 
@@ -50,11 +49,16 @@ app.post("/add-item", (req, res) => {
 });
 
 app.post("/remove-item", (req, res) => {
-  const { showId, userId, name } = req.body;
+  const { showId, userId, name, type } = req.body;
 
   const userDocRef = db.collection(userId).doc(name);
   userDocRef
-    .remove({ list: admin.firestore.FieldValue.arrayRemove(showId) })
+    .update({
+      list: admin.firestore.FieldValue.arrayRemove({
+        showId: showId,
+        type: type,
+      }),
+    })
     .then(() => {
       res.status(200).send("Show removed");
     });
@@ -76,6 +80,7 @@ app.post("/my-list", async (req, res) => {
             `${process.env.moviesApiURL}/${item.type}/${item.showId}${process.env.apiKey}`
           )
           .then((res) => {
+            res.data["media_type"] = item.type;
             list_items.push(res.data);
           });
       })
@@ -83,6 +88,30 @@ app.post("/my-list", async (req, res) => {
   });
 
   res.json(list_items);
+});
+
+app.post("/delete-profile", async (req, res) => {
+  const { userId, name } = req.body;
+
+  await db.collection(userId).doc(name).delete();
+
+  res.status(200).send("Successfully Deleted");
+});
+
+app.post("/update-profile", async (req, res) => {
+  const { userId, name, newName, picture } = req.body;
+
+  const ref = db.collection(userId).doc(name);
+  const profileData = (await ref.get()).data();
+
+  await db
+    .collection(userId)
+    .doc(newName)
+    .set({ picture: picture, list: profileData.list });
+
+  await db.collection(userId).doc(name).delete();
+
+  res.status(200).send("Successfully Updated");
 });
 
 module.exports = app;

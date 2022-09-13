@@ -1,25 +1,27 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { search } from "../MainPage";
-import MovieHover from "../MainPage/CardHover";
+import { Route, Routes, useSearchParams } from "react-router-dom";
+import { baseUrl } from "../../url";
+import LoadingSkeleton from "../LoadingSkeleton";
+import AllInfo from "../MainPage/ContextApi";
 import DisplayContents from "../MainPage/DisplayContent";
 import SliderItem from "../MainPage/SliderItem";
 
 const Search = () => {
+  const display = sessionStorage.getItem("displayContents");
   const [searchParams, setSearchParams] = useSearchParams();
   const searchC = searchParams.get("s");
   const [data, setData] = useState();
   const [actors, setActors] = useState([]);
   const [showDeets, setShowDeets] = useState();
   const [showId, setShowId] = useState();
-  const [showInfo, setShowInfo] = useState();
-  const [hoverCardType, setHoveredCardType] = useState("");
   const [hoverCard, setHoverCard] = useState(0);
-
+  const [forDisplayContents, setDisplayContents] = useState(
+    display && JSON.parse(display)
+  );
   const fetchsearch = async () => {
     await axios
-      .get(`${process.env.REACT_APP_baseServerurl}/movies/search`, {
+      .post(`/api/movies/search`, null, {
         params: {
           s: searchC,
         },
@@ -33,6 +35,7 @@ const Search = () => {
             actorsData.push(r);
           } else dataData.push(r);
         });
+
         setData(dataData);
         setActors(actorsData);
       });
@@ -44,78 +47,61 @@ const Search = () => {
 
   return (
     <div className="search-results">
-      <h1>Results for {searchC} and more</h1>
-      {data && (
-        <div>
-          <div style={{ display: "flex", flexWrap: "wrap", marginTop: "10px" }}>
-            <p style={{ color: "grey", display: "flex", flexWrap: "wrap" }}>
-              Explore Titles related to:{" "}
-            </p>
-            {actors.map((a) => {
-              return (
-                <p
-                  className="related-list"
-                  style={{ margin: "0px 5px" }}
-                  onClick={() => {
-                    setData(a.known_for);
-                  }}
-                >
-                  {" "}
-                  {a.name}|
-                </p>
-              );
-            })}
+      <AllInfo.Provider
+        value={[
+          showId,
+          setShowId,
+          showDeets,
+          setShowDeets,
+          forDisplayContents,
+          setDisplayContents,
+          hoverCard,
+          setHoverCard,
+        ]}
+      >
+        <h1>Results for {searchC} and more</h1>
+        {data ? (
+          <div>
+            <div
+              style={{ display: "flex", flexWrap: "wrap", marginTop: "10px" }}
+            >
+              <p style={{ color: "grey", display: "flex", flexWrap: "wrap" }}>
+                Explore Titles related to:{" "}
+              </p>
+              {actors.map((a) => {
+                return (
+                  <p
+                    className="related-list"
+                    style={{ margin: "0px 5px" }}
+                    onClick={() => {
+                      setData(a.known_for);
+                    }}
+                  >
+                    {" "}
+                    {a.name}|
+                  </p>
+                );
+              })}
+            </div>
+            <div className="shows-list movies">
+              {data.map((d, index) => {
+                return (
+                  <SliderItem
+                    {...d}
+                    index={index}
+                    category="search"
+                  ></SliderItem>
+                );
+              })}
+            </div>
           </div>
-          <div className="shows-list">
-            {data.map((d, index) => {
-              return (
-                <div
-                  className="card"
-                  data-id={d.id}
-                  onMouseEnter={() => {
-                    if (hoverCard) clearTimeout(hoverCard);
-                    setHoverCard(
-                      setTimeout(() => {
-                        setShowId(d.id);
-                        setShowDeets(d);
-                        setHoveredCardType("small");
-                      }, 600)
-                    );
-                  }}
-                  onMouseLeave={(e) => {
-                    if (hoverCard) clearTimeout(hoverCard);
-                    else
-                      setTimeout(() => {
-                        showId();
-                        setHoveredCardType("");
-                      }, 100);
-                  }}
-                >
-                  <figure>
-                    <img
-                      src={`${process.env.REACT_APP_w500imgPATH}${d.poster_path}`}
-                    ></img>
-                  </figure>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-      {showInfo && (
-        <DisplayContents
-          showInfo={[showInfo, setShowInfo]}
-          // genre={genres}
-        />
-      )}
-      {showId && (
-        <MovieHover
-          showDeets={showDeets}
-          showInfo={setShowInfo}
-          showId={[showId, setShowId]}
-          cardType={[hoverCardType, setHoveredCardType]}
-        />
-      )}
+        ) : (
+          <LoadingSkeleton number={5} width={200} height={350} />
+        )}
+        <Routes>
+          <Route path={`/content=:id`} element={<DisplayContents />}></Route>
+        </Routes>
+      </AllInfo.Provider>
     </div>
   );
 };

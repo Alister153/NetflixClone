@@ -5,7 +5,6 @@ import "./styles/Signup.css";
 import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
-  const navigate = useNavigate()
   const page = sessionStorage.getItem("page")
   const [signPage, setSignPage] = useState(page ? page: "login");
   return (

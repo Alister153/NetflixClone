@@ -1,20 +1,25 @@
-import { useEffect, useRef, useState, useContext } from "react";
-import { ScreenWidth } from "../../App";
+import { useRef, useContext } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ScreenWidth, Scroll } from "../../App";
+import { w500imgPATH } from "../../url";
 import MovieHover from "./CardHover";
 import AllInfo from "./ContextApi";
 
 const SliderItem = (s) => {
-  const screen = useContext(ScreenWidth)
+  const location = useLocation();
+  const currPath = location.pathname;
+  const searchVal = location.search;
+  const navigate = useNavigate();
+  const screen = useContext(ScreenWidth);
   const CurrCard = useRef();
+  const [, setScroll] = useContext(Scroll);
   const [
     showId,
     setShowId,
     showDeets,
     setShowDeets,
-    showInfo,
-    setShowInfo,
-    hoverCardType,
-    setHoveredCardType,
+    forDisplayContents,
+    setDisplayContents,
     hoverCard,
     setHoverCard,
   ] = useContext(AllInfo);
@@ -25,10 +30,16 @@ const SliderItem = (s) => {
       id={s.title || s.name}
       ref={CurrCard}
       data-id={`${s.category}-${s.id}`}
+      onClick={() => {
+        setDisplayContents(s);
+        sessionStorage.setItem("displayContents", JSON.stringify(s));
+        setScroll(true);
+        navigate(`${currPath}/content=${s.id}${searchVal && `/${searchVal}`}`);
+      }}
       onMouseLeave={(e) => {
+        clearTimeout(hoverCard);
         setShowId();
         setShowDeets();
-        setHoveredCardType("");
       }}
       onMouseOver={() => {
         if (hoverCard) clearTimeout(hoverCard);
@@ -36,19 +47,13 @@ const SliderItem = (s) => {
           setTimeout(() => {
             setShowId(`${s.category}-${s.id}`);
             setShowDeets(s);
-            setHoveredCardType("small");
-          }, 300)
+          }, 1000)
         );
       }}
     >
-      <img src={`${process.env.REACT_APP_w500imgPATH}${s.poster_path}`}></img>
+      <img loading="lazy" src={`${w500imgPATH}${s.poster_path}`}></img>
       {screen > 900 && showId === `${s.category}-${s.id}` && (
-        <MovieHover
-          showDeets={showDeets}
-          showInfo={setShowInfo}
-          showId={[showId, setShowId]}
-          cardType={[hoverCardType, setHoveredCardType]}
-        />
+        <MovieHover cardType="small" />
       )}
     </div>
   );

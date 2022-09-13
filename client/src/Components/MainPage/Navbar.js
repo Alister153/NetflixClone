@@ -1,5 +1,5 @@
 import { useState, useContext, useRef } from "react";
-import { Profile, ProfilesData, ScreenWidth } from "../../App";
+import { Profile, ProfilesData, ScreenWidth, validate } from "../../App";
 import { userData } from "../userData";
 import { BiSearch, BiUser, BiHelpCircle } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -12,8 +12,8 @@ import { auth } from "../../firebase";
 var searchTimeout = 0;
 function Navbar(props) {
   const screen = useContext(ScreenWidth);
-  const [profile, setProfile] = useContext(Profile);
-  const [searchContent, setSearchContent] = useContext(search);
+  const [, setSignIn] = useContext(validate);
+  const [activeProfile, setActiveProfile] = useContext(Profile);
   const [Allprofiles, setAllProfiles] = useContext(ProfilesData);
   const navigate = useNavigate();
   const searchRef = useRef();
@@ -30,7 +30,8 @@ function Navbar(props) {
     searchRef.current.classList.toggle("active");
   };
 
-  const navToggle = () => {
+  const navToggle = (e) => {
+    e.stopPropagation();
     navMenu.current.classList.toggle("active");
     overlay.current.classList.toggle("overlay");
   };
@@ -72,27 +73,14 @@ function Navbar(props) {
   };
 
   const browse = () => {
-    var browseTimeout;
-
-    const popBrowse = () => {
-      clearTimeout(browseTimeout);
-      notifications.current.classList.remove("active");
-      profileSettings.current.classList.remove("active");
-      Browse.current.classList.add("active");
-    };
-    const removeBrowse = () => {
-      browseTimeout = setTimeout(() => {
-        Browse.current.classList.remove("active");
-      }, 200);
-    };
-    const cate = (
+    return (
       <ul className="categories">
         <li
           onClick={(e) => {
             activeSection(e);
             sessionStorage.setItem("section", "home");
             searchRef.current.classList.remove("active");
-            navigate("/");
+            navigate("/browse");
           }}
           data-active={section === "home"}
         >
@@ -141,35 +129,23 @@ function Navbar(props) {
         <li
           onClick={(e) => {
             activeSection(e);
-            navigate("/");
+            navigate("/browse");
           }}
         >
           Browse by Languages
         </li>
       </ul>
     );
-
-    if (screen > 900) return cate;
-
-    return (
-      <div
-        className="browse pl-3"
-        ref={Browse}
-        onMouseEnter={popBrowse}
-        onMouseLeave={removeBrowse}
-      >
-        <p>Browse</p>
-        {cate}
-      </div>
-    );
   };
 
   const logOut = () => {
     localStorage.removeItem("activeProfile");
+    setSignIn(false);
     auth.signOut();
+    navigate("/");
   };
 
-  return screen > 900 ? (
+  return screen > 1100 ? (
     <nav className="navbar">
       <div className="logo-category">
         <figure>
@@ -198,6 +174,11 @@ function Navbar(props) {
                       navigate(`/search?s=${value}`);
                     }, 500);
                   }
+                }}
+                onKeyDown={(e) => {
+                  const { value } = e.target;
+                  if (e.key === "Enter" && value.length !== 0)
+                    navigate(`/search?s=${value}`);
                 }}
               ></input>
             </div>
@@ -263,7 +244,7 @@ function Navbar(props) {
             {Allprofiles &&
               Allprofiles.map((p) => {
                 return (
-                  p.name === profile && (
+                  p.name === activeProfile && (
                     <figure>
                       <img src={p.data.picture}></img>
                     </figure>
@@ -275,12 +256,12 @@ function Navbar(props) {
               <ul>
                 {Allprofiles &&
                   Allprofiles.map((p) => {
-                    if (p.name !== profile)
+                    if (p.name !== activeProfile)
                       return (
                         <li
                           onClick={() => {
                             localStorage.setItem("activeProfile", p.name);
-                            setProfile(p.name);
+                            setActiveProfile(p.name);
                           }}
                         >
                           <figure>
@@ -319,15 +300,59 @@ function Navbar(props) {
     </nav>
   ) : (
     <nav className="navbar">
-      <div className="nav--wrapper fixed left-0 right-0 flex h-24">
-        <div className="" ref={overlay}></div>
+      <div
+        className="nav--wrapper fixed left-0 right-0 flex h-24"
+        style={{ height: "10vh" }}
+      >
+        <div className="" ref={overlay} onClick={navToggle}></div>
+        <div
+          className="flex w-full justify-between align-center px-5"
+          onClick={() => {
+            navMenu.current.classList.remove("active");
+            overlay.current.classList.remove("overlay");
+          }}
+        >
+          <div className="logo-category flex w-1/4">
+            <figure className="h-5 w-5" onClick={navToggle}>
+              <GiHamburgerMenu className="w-full h-full"></GiHamburgerMenu>
+            </figure>
+            <figure className="ml-1">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1198px-Netflix_2015_logo.svg.png?20190206123158"></img>
+            </figure>
+          </div>
+          <div
+            className="search"
+            style={{ display: "flex", alignItems: "center", width: "60%" }}
+          >
+            <input
+              placeholder="Search"
+              className="w-full focus:outline-none"
+              style={{
+                width: "100%",
+                background: "#141414",
+                padding: "5px",
+                border: "1px solid grey",
+              }}
+              onChange={(e) => {
+                const { value } = e.target;
+                if (searchTimeout) clearTimeout(searchTimeout);
+                if (value.length === 0) navigate("/");
+                else if (/^\S/.test(value)) {
+                  searchTimeout = setTimeout(() => {
+                    navigate(`/search?s=${value}`);
+                  }, 500);
+                }
+              }}
+            ></input>
+          </div>
+        </div>
         <div className="nav-menu overflow-hidden " ref={navMenu}>
           <ul className="flex flex-col justify-evenly w-60 font-semibold categories">
             <li className="w-full mb-5 border-b-2 border-gray-600">
               {Allprofiles &&
                 Allprofiles.map((p) => {
                   return (
-                    p.name === profile && (
+                    p.name === activeProfile && (
                       <li className="Profile-settings cursor-pointer px-5 py-1 w-full flex justify-start items-end">
                         <figure className="w-9">
                           <img src={p.data.picture}></img>
@@ -338,7 +363,8 @@ function Navbar(props) {
                             className="text-xs w-full font-thin"
                             onClick={() => {
                               localStorage.removeItem("activeProfile");
-                              setProfile();
+                              setActiveProfile();
+                              navigate("/");
                             }}
                           >
                             Switch Profiles
@@ -349,103 +375,89 @@ function Navbar(props) {
                   );
                 })}
               <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
-                <p>Account</p>
+                <p className="w-full">Account</p>
               </li>
               <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
-                <p>Help Centre</p>
+                <p className="w-full">Help Centre</p>
+              </li>
+              <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
+                <p className="w-full" onClick={logOut}>
+                  Sign out of Netflix
+                </p>
+              </li>
+            </li>
+            <li className="w-full relative">
+              <li
+                className="sections home w-full py-1 px-5 flex justify-start cursor-pointer"
+                onClick={(e) => {
+                  activeSection(e);
+                  navigate("/browse");
+                  sessionStorage.setItem("section", "home");
+                  navToggle();
+                }}
+                data-active={section === "home"}
+              >
+                <p className="w-full">Home</p>
               </li>
               <li
-                className="w-full py-1 px-5 flex justify-start cursor-pointer"
-                onClick={logOut}
+                className="sections list w-full py-1 px-5 flex justify-start cursor-pointer"
+                onClick={(e) => {
+                  activeSection(e);
+                  sessionStorage.setItem("section", "my-list");
+                  navigate("/my-list");
+                  navToggle();
+                }}
+                data-active={section === "my-list"}
               >
-                <p>Sign out of Netflix</p>
+                <p className="w-full">My List</p>
               </li>
-            </li>
-            <li
-              className="w-full py-1 px-5 flex justify-start cursor-pointer"
-              onClick={(e) => {
-                activeSection(e);
-                navigate("/");
-                navToggle();
-              }}
-              data-active={section === "home"}
-            >
-              <p>Home</p>
-            </li>
-            <li
-              className="w-full py-1 px-5 flex justify-start cursor-pointer"
-              onClick={(e) => {
-                activeSection(e);
-                sessionStorage.setItem("section", "my-list");
-                navigate("/my-list");
-                navToggle();
-              }}
-              data-active={section === "my-list"}
-            >
-              <p>My List</p>
-            </li>
-            <li
-              className="w-full py-1 px-5 flex justify-start cursor-pointer"
-              onClick={(e) => {
-                activeSection(e);
-                sessionStorage.setItem("section", "tv");
-                navigate(`/genre/tv`);
-                navToggle();
-              }}
-              data-active={section === "tv"}
-            >
-              <p>Tv Shows</p>
-            </li>
-            <li
-              className="w-full py-1 px-5 flex justify-start cursor-pointer"
-              onClick={(e) => {
-                activeSection(e);
-                sessionStorage.setItem("section", "movies");
-                navigate(`/genre/movies`);
-                navToggle();
-              }}
-              data-active={section === "movies"}
-            >
-              <p>Movies</p>
-            </li>
-            <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
-              <p>Action</p>
-            </li>
-            <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
-              <p>Adventure</p>
-            </li>
-            <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
-              <p>Comedies</p>
+              <li
+                className="sections tv w-full py-1 px-5 flex justify-start cursor-pointer"
+                onClick={(e) => {
+                  activeSection(e);
+                  sessionStorage.setItem("section", "tv");
+                  navigate(`/genre/tv`);
+                  navToggle();
+                }}
+                data-active={section === "tv"}
+              >
+                <p className="w-full">Tv Shows</p>
+              </li>
+              <li
+                className="sections movies w-full py-1 px-5 flex justify-start cursor-pointer"
+                onClick={(e) => {
+                  activeSection(e);
+                  sessionStorage.setItem("section", "movies");
+                  navigate(`/genre/movies`);
+                  navToggle();
+                }}
+                data-active={section === "movies"}
+              >
+                <p className="w-full">Movies</p>
+              </li>
+              <li
+                className="sections latest w-full py-1 px-5 flex justify-start cursor-pointer"
+                onClick={(e) => {
+                  activeSection(e);
+                  sessionStorage.setItem("section", "latest");
+                  navigate("/latest");
+                }}
+                data-active={section === "latest"}
+              >
+                Latest
+              </li>
+              {/* <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
+                <p>Action</p>
+              </li>
+              <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
+                <p>Adventure</p>
+              </li>
+              <li className="w-full py-1 px-5 flex justify-start cursor-pointer">
+                <p>Comedies</p>
+              </li> */}
+              <span className="nav-side-slider"></span>
             </li>
           </ul>
-        </div>
-        <div className="flex w-full justify-between align-center px-5">
-          <div className="logo-category flex w-1/4">
-            <figure
-              className="h-5 w-5"
-              onClick={navToggle}
-            >
-              <GiHamburgerMenu className="w-full h-full"></GiHamburgerMenu>
-            </figure>
-            <figure className="ml-1">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1198px-Netflix_2015_logo.svg.png?20190206123158"></img>
-            </figure>
-          </div>
-          <div
-            className="search"
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            <div>
-              <input
-                placeholder="Search"
-                style={{
-                  background: "#141414",
-                  padding: "5px",
-                  border: "1px solid grey",
-                }}
-              ></input>
-            </div>
-          </div>
         </div>
       </div>
     </nav>

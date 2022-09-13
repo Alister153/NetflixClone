@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CreateModal = () => {
@@ -29,7 +29,7 @@ const CreateModal = () => {
       .closest(".email-form")
       .querySelector("input[type=text]");
     sessionStorage.setItem("email", value);
-    
+
     navigate("/get-started");
   };
 
@@ -284,6 +284,7 @@ const CreateModal = () => {
               <p>Email address</p>
               <input
                 type="text"
+                ref={emailValue2}
                 value={email2}
                 onChange={(e) => {
                   if (emailInput2) setEmail2(e.target.value);
@@ -295,7 +296,7 @@ const CreateModal = () => {
                 e.stopPropagation();
                 if (email2.length === 0) {
                   emailIn2.current.classList.add("active");
-                  emailIn2.current.focus();
+                  emailValue2.current.focus();
                 } else {
                   getStarted(e);
                 }

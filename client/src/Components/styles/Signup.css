@@ -4,24 +4,26 @@ br {
 }
 .signup {
   background: url("https://www.notebookcheck.net/fileadmin/Notebooks/News/_nc3/netflixteaser.png");
-  background-size: cover;
-  height: 100%;
+  height: 779px;
 }
 .signup .navbar {
   position: relative;
   z-index: 1;
   background: linear-gradient(180deg, black, transparent);
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
 }
 .signup .navbar figure {
   margin: 20px 0px;
-  width: 10%;
+  width: 25%;
   max-height: 100%;
 }
 .signup .navbar figure img {
-  width: 100%;
+  width: 30%;
 }
 .signup .navbar .language-sign {
-  width: 15%;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -34,6 +36,7 @@ br {
   border: 1px solid white;
   border-radius: 1px;
   color: white;
+  margin-right: 5px;
 }
 .signup .navbar .language-sign button {
   color: white;
@@ -62,7 +65,11 @@ br {
 }
 .login--modal .modal {
   width: 70%;
-  height: 80%;
+  min-height: 600px;
+}
+.login--modal .modal .modal--inner--wrapper {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -71,11 +78,12 @@ br {
   width: 100%;
 }
 .login--modal .modal .email-password label {
-  display: block;
   background-color: white;
-  height: 45px;
+  height: 50px;
   border-radius: 5px;
   position: relative;
+  display: flex;
+  align-items: center;
   margin: 10px 0px;
   padding: 5px 20px;
 }
@@ -90,21 +98,22 @@ br {
 }
 .login--modal .modal .email-password label p:nth-child(1) {
   position: absolute;
-  font-size: 17px;
+  font-size: 15px;
+  width: 70%;
+  top: 0%;
   left: 0%;
-  transform: translateX(20px) translateY(10px);
+  transform: translateX(10%) translateY(15px);
   color: black;
   background-color: transparent;
   transition: transform 300ms ease, font 300ms ease;
 }
 .login--modal .modal .email-password label.active p:nth-child(1) {
   font-size: 12px;
-  transform: translateX(20px) translateY(0px);
+  transform: translateX(11%) translateY(0px);
 }
 .login--modal .modal .email-password label input {
   background-color: transparent;
   position: relative;
-  transform: translateY(10px);
   z-index: 1;
   width: 100%;
   height: 100%;
@@ -214,7 +223,7 @@ br {
 
 /* Create Modal */
 .create--wrapper {
-  height: 90vh;
+  height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,28 +254,32 @@ br {
 .title-2 .email-form {
   display: flex;
   justify-content: start;
+  align-items: center;
   width: 100%;
-  height: 60px;
+  height: 50px;
   background-color: white;
 }
 .title-2 .email-form .email {
   position: relative;
+  display: flex;
+  align-items: center;
   background-color: white;
-  min-height: 60px;
+  min-height: 50px;
   width: 100%;
+  display: flex;
 }
 .title-2 .email-form .email p {
   position: absolute;
   z-index: 0;
   color: grey;
   top: 0%;
-  transform: translateX(10px) translateY(130%);
+  transform: translateX(10%) translateY(15px);
   transition: transform 200ms ease, font 200ms ease;
   font-size: 15px;
 }
 .title-2 .email-form.active .email p {
-  transform: translateX(10px) translateY(5px);
-  font-size: 10px;
+  transform: translateX(14%) translateY(15%);
+  font-size: 12px;
 }
 .title-2 .email-form input {
   position: relative;
@@ -407,7 +420,6 @@ br {
   display: flex;
   align-items: center;
   flex-direction: column;
-  width: 50%;
 }
 .questions--wrapper .title-2 > * {
   margin: 5px 0px;
@@ -468,6 +480,7 @@ br {
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 .get-started--wrapper .setup .parts {
   position: absolute;
@@ -506,7 +519,7 @@ br {
 .get-started--wrapper .setup .parts figure {
   width: 500px;
 }
-.get-started--wrapper .setup .parts figure img{
+.get-started--wrapper .setup .parts figure img {
   width: 100%;
 }
 .get-started--wrapper .setup .password {
@@ -515,30 +528,30 @@ br {
   height: 50%;
   margin: 10px;
 }
-.get-started--wrapper .setup .password div {
+.get-started--wrapper .setup .password label {
   width: 100%;
   height: 50%;
   border: 1px solid black;
   border-radius: 5px;
 }
-.get-started--wrapper .setup .password div .placeholder {
+.get-started--wrapper .setup .password .placeholder {
   position: absolute;
   top: 0%;
   transform: translateY(15px) translateX(15%);
-  transition: transform 400ms ease , font 400ms ease, color 200ms ease;
+  transition: transform 400ms ease, font 400ms ease, color 200ms ease;
 }
-.get-started--wrapper .setup .password.active div .placeholder {
-  font-size: 15px;
-  transform: translateY(15%) translateX(15%);
+.get-started--wrapper .setup .password.active .placeholder {
+  font-size: 12px;
+  transform: translateY(15%) translateX(20%);
 }
-.get-started--wrapper .setup .password div label {
+.get-started--wrapper .setup .password label {
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 50px;
   width: 100%;
 }
-.get-started--wrapper .setup .password div label input {
+.get-started--wrapper .setup .password label input {
   color: black;
   width: 80%;
   transform: translateY(0px);
@@ -547,7 +560,7 @@ br {
   outline: none;
   background-color: transparent;
 }
-.get-started--wrapper .setup .password div label .pass-vis {
+.get-started--wrapper .setup .password label .pass-vis {
   transform: translateX(-10px);
   cursor: pointer;
 }
@@ -564,9 +577,9 @@ br {
   padding: 10px 50px;
 }
 @media only screen and (max-width: 900px) {
-  /* h1 {
-    font-size: 30px !important;
-  } */
+  .signup .navbar figure img {
+    width: 100%;
+  }
   .login--modal .modal--wrapper {
     justify-content: start;
     align-items: center;
@@ -581,6 +594,9 @@ br {
   }
   .create--wrapper .header .title-2 {
     width: 300px;
+  }
+  .title-2 {
+    padding: 10px;
   }
   .title-2 .email-form {
     flex-direction: column;
@@ -626,5 +642,17 @@ br {
   }
   .get-started--wrapper .setup .parts figure {
     width: 300px;
+  }
+  h1 {
+    font-size: 30px !important;
+  }
+  .text--wrapper p {
+    font-size: 15px !important;
+  }
+  .questions--wrapper .main-questions .questions .question {
+    font-size: 20px;
+  }
+  .questions--wrapper .main-questions .questions .answer {
+    font-size: 15px;
   }
 }

@@ -1,70 +1,84 @@
-import { useState } from "react";
-import { useContext } from "react";
-import { useEffect } from "react";
-import { auth } from "../../firebase";
+import { useState, useEffect, useContext } from "react";
+import { auth, db } from "../../firebase";
 import { Profile } from "../../App";
 import axios from "axios";
 import SliderItem from "./SliderItem";
 import AllInfo from "./ContextApi";
 import "./styles/MyList.css";
 import DisplayContents from "./DisplayContent";
-import MovieHover from "./CardHover";
+import { Route, Routes } from "react-router-dom";
+import { baseUrl } from "../../url";
+import { NotificationManager } from "react-notifications";
+import { collection, onSnapshot } from "firebase/firestore";
+import LoadingSkeleton from "../LoadingSkeleton";
 
 const MyList = () => {
-  const [profile] = useContext(Profile);
+  const display = sessionStorage.getItem("displayContents");
+  const [activeProfile] = useContext(Profile);
   const [list, setlist] = useState();
   const [showDeets, setShowDeets] = useState();
   const [showId, setShowId] = useState();
-  const [showInfo, setShowInfo] = useState();
-  const [hoverCardType, setHoveredCardType] = useState("");
   const [hoverCard, setHoverCard] = useState(0);
-
+  const [forDisplayContents, setDisplayContents] = useState(
+    display && JSON.parse(display)
+  );
   const getList = () => {
     const data = {
       userId: auth.currentUser.uid,
-      name: profile,
+      name: activeProfile,
     };
-    axios
-      .post(`${process.env.REACT_APP_baseServerurl}/profile/my-list`, data)
-      .then((res) => {
-        setlist(res.data);
-      });
+    axios.post(`/api/profile/my-list`, data).then((res) => {
+      setlist(res.data);
+    });
   };
 
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
-      if (user) getList();
+      if (user) {
+        getList();
+        onSnapshot(collection(db, auth.currentUser.uid), (snap) => {
+          getList();
+        });
+      }
     });
-  }, []);
+  }, [activeProfile]);
+
   return (
-    <div className="page--wrapper my-list--wrapper py-10 lg:px-0">
-        <div className="title text-lg lg:text-3xl px-10">
-          <h1>My List</h1>
-        </div>
-      <div className="moviesCategories">
-        <AllInfo.Provider
-          value={[
-            showId,
-            setShowId,
-            showDeets,
-            setShowDeets,
-            showInfo,
-            setShowInfo,
-            hoverCardType,
-            setHoveredCardType,
-            hoverCard,
-            setHoverCard,
-          ]}
-        >
-          {list &&
+    <div className="page--wrapper my-list--wrapper p-10">
+      <div className="title text-lg lg:text-3xl w-full">
+        <h1 className="ml-1">My List</h1>
+      </div>
+      <AllInfo.Provider
+        value={[
+          showId,
+          setShowId,
+          showDeets,
+          setShowDeets,
+          forDisplayContents,
+          setDisplayContents,
+          hoverCard,
+          setHoverCard,
+        ]}
+      >
+        <div className="moviesCategories">
+          {list ? (
             list.map((l, index) => {
               return (
                 <SliderItem {...l} index={index} category="list"></SliderItem>
               );
-            })}
-        </AllInfo.Provider>
-      </div>
-      {showInfo && <DisplayContents showInfo={[showInfo, setShowInfo]} />}
+            })
+          ) : (
+            <LoadingSkeleton
+              number={5}
+              width={200}
+              height={350}
+            ></LoadingSkeleton>
+          )}
+        </div>
+        <Routes>
+          <Route path={`/content=:id`} element={<DisplayContents />}></Route>
+        </Routes>
+      </AllInfo.Provider>
     </div>
   );
 };
