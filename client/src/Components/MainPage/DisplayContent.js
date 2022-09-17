@@ -104,7 +104,7 @@ function DisplayContents(props) {
   };
 
   const scrollParallex = (e) => {
-    var value = screen > 1100 ? 400 : 170;
+    var value = screen > 1100 ? 370 : 170;
     const element = document.getElementsByClassName("details-recommends")[0];
     const img = document
       .getElementsByClassName("show-trailer")[0]
