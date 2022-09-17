@@ -41,7 +41,7 @@ const SliderItem = (s) => {
         setShowId();
         setShowDeets();
       }}
-      onMouseOver={() => {
+      onMouseEnter={() => {
         if (hoverCard) clearTimeout(hoverCard);
         setHoverCard(
           setTimeout(() => {

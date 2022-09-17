@@ -334,7 +334,6 @@ input:focus {
 .moviesCategories .categories .title h1:first-child {
   position: relative;
   z-index: 2;
-  background-color: #141414;
 }
 .moviesCategories .categories .title .explore {
   position: absolute;
@@ -345,6 +344,7 @@ input:focus {
   right: 0%;
   transform: translateY(50%);
   opacity: 0;
+  width: 80px;
   transition: opacity 500ms ease, transform 1500ms ease;
 }
 .moviesCategories .categories .title .explore.active {
@@ -914,7 +914,7 @@ input:focus {
   .shows-list .card {
     width: 45% !important;
   }
-  .more--info  .show-trailer{
+  .more--info .show-trailer {
     height: 250px;
   }
 }
