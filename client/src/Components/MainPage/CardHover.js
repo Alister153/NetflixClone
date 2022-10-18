@@ -64,7 +64,7 @@ function MovieHover(props) {
   };
 
   const checkList = () => {
-    return list.some(
+    return list?.some(
       (d) => d.showId === showDeets.id && d.type === showDeets.media_type
     );
   };
