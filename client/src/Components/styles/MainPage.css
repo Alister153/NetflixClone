@@ -687,7 +687,7 @@ input:focus {
   border-radius: 5px 5px 0px 0px;
 }
 .more--info .recommendations .movies .recomend-movie-wrapper {
-  width: 235px;
+  width: 235px !important;
   background: linear-gradient(-180deg, transparent, rgb(41, 41, 41));
   border-radius: 5px;
   min-height: 355px;
