@@ -1,4 +1,4 @@
-{
+module.exports = {
   "type": "service_account",
   "project_id": "netfl-432e5",
   "private_key_id": process.env.PRIVATE_KEY_ID,
