@@ -1,15 +1,15 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useSearchParams } from "react-router-dom";
-import { baseUrl } from "../../url";
 import LoadingSkeleton from "../LoadingSkeleton";
 import AllInfo from "../MainPage/ContextApi";
 import DisplayContents from "../MainPage/DisplayContent";
 import SliderItem from "../MainPage/SliderItem";
+import { baseUrl } from "../../url";
 
 const Search = () => {
   const display = sessionStorage.getItem("displayContents");
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, ] = useSearchParams();
   const searchC = searchParams.get("s");
   const [data, setData] = useState();
   const [actors, setActors] = useState([]);
@@ -21,7 +21,7 @@ const Search = () => {
   );
   const fetchsearch = async () => {
     await axios
-      .post(`/api/movies/search`, null, {
+      .post(`${baseUrl}/api/movies/search`, null, {
         params: {
           s: searchC,
         },
@@ -48,7 +48,7 @@ const Search = () => {
   return (
     <div className="search-results">
       <AllInfo.Provider
-        value={[
+        value={{
           showId,
           setShowId,
           showDeets,
@@ -57,7 +57,7 @@ const Search = () => {
           setDisplayContents,
           hoverCard,
           setHoverCard,
-        ]}
+        }}
       >
         <h1>Results for {searchC} and more</h1>
         {data ? (

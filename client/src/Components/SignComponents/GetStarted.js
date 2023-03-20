@@ -3,8 +3,8 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRef, useState } from "react";
 import { NotificationManager } from "react-notifications";
 import { auth } from "../../firebase";
-import { baseUrl } from '../../url'
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../url";
 
 const GetStarted = () => {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ const GetStarted = () => {
       password: password,
     };
     axios
-      .post(`/api/login/signup`, data)
+      .post(`${baseUrl}/api/login/signup`, data)
       .then((res) => {
         NotificationManager.success(res.data);
         nextSlide(e);

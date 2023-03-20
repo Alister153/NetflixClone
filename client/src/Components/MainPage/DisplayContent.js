@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import LoadingSkeleton from "../LoadingSkeleton";
-import { List, Profile, ScreenWidth, Scroll } from "../../App";
+import { List, Profile, Scroll } from "../../App";
 import { fetchTrailer } from "./CardHover";
-import { baseUrl, OriginalimgPATH } from "../../url";
+import { OriginalimgPATH, baseUrl } from "../../url";
 import { useNavigate } from "react-router-dom";
 import AllInfo from "./ContextApi";
 import { AiFillPlayCircle } from "react-icons/ai";
@@ -14,27 +13,18 @@ import {
 import { BsFillHandThumbsUpFill, BsHandThumbsDownFill } from "react-icons/bs";
 import { NotificationManager } from "react-notifications";
 import { auth } from "../../firebase";
+import { useScreenWidth } from "../../Hooks.";
 
 var trailerTimeout = 0;
-function DisplayContents(props) {
+function DisplayContents() {
   const navigate = useNavigate();
-  const [
-    showId,
-    setShowId,
-    showDeets,
-    setShowDeets,
-    forDisplayContents,
-    setDisplayContents,
-    hoverCard,
-    setHoverCard,
-  ] = useContext(AllInfo);
-  const [, setScroll] = useContext(Scroll);
-  const screen = useContext(ScreenWidth);
+  const { forDisplayContents } = useContext(AllInfo);
+  const {setScroll}= useContext(Scroll);
+  const screen = useScreenWidth()
   const list = useContext(List);
-  const [activeProfile] = useContext(Profile);
+  const {activeProfile} = useContext(Profile);
   const [recommendations, setRecommendations] = useState();
   const [credits, setCredits] = useState();
-  const [, setGenres] = useState();
 
   const close = (e) => {
     clearTimeout(trailerTimeout);
@@ -51,9 +41,11 @@ function DisplayContents(props) {
       type: forDisplayContents.media_type,
     };
 
-    axios.post(`/api/profile/add-item`, data).then((res) => {
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(`${baseUrl}/api/profile/add-item`, data)
+      .then((res) => {
+        NotificationManager.success(res.data);
+      });
   };
 
   const removeFromList = () => {
@@ -64,9 +56,14 @@ function DisplayContents(props) {
       type: forDisplayContents.media_type,
     };
 
-    axios.post(`/api/profile/remove-item`, data).then((res) => {
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(
+        `${baseUrl}/api/profile/remove-item`,
+        data
+      )
+      .then((res) => {
+        NotificationManager.success(res.data);
+      });
   };
 
   const checkList = () => {
@@ -83,7 +80,10 @@ function DisplayContents(props) {
       id: forDisplayContents.id,
     };
     await axios
-      .post(`/api/movies/get-recommendations`, data)
+      .post(
+        `${baseUrl}/api/movies/get-recommendations`,
+        data
+      )
       .then((res) => setRecommendations(res.data));
   };
 
@@ -92,15 +92,14 @@ function DisplayContents(props) {
       type: forDisplayContents.media_type,
       id: forDisplayContents.id,
     };
-    await axios.post(`/api/movies/get-credits`, data).then((res) => {
-      setCredits(res.data);
-    });
-  };
-
-  const getGenres = async () => {
-    await axios.post(`/api/movies/get-genres`).then((res) => {
-      setGenres(res.data);
-    });
+    await axios
+      .post(
+        `${baseUrl}/api/movies/get-credits`,
+        data
+      )
+      .then((res) => {
+        setCredits(res.data);
+      });
   };
 
   const scrollParallex = (e) => {
@@ -116,7 +115,6 @@ function DisplayContents(props) {
 
   useEffect(() => {
     getCredits();
-    getGenres();
     more_Recommendations();
 
     trailerTimeout = setTimeout(() => {

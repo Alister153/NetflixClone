@@ -2,7 +2,6 @@ import { useState } from "react";
 import CreateModal from "./SignComponents/CreateModal";
 import LoginModal from "./SignComponents/LoginModal";
 import "./styles/Signup.css";
-import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
   const page = sessionStorage.getItem("page")

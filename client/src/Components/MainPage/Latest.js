@@ -1,11 +1,11 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AllInfo from "./ContextApi";
 import Categories from "./Sections";
 import DisplayContents from "../MainPage/DisplayContent";
-import MovieHover from "../MainPage/CardHover";
 import LoadingSkeleton from "../LoadingSkeleton";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { baseUrl } from "../../url";
 
 const Latest = () => {
   const display = sessionStorage.getItem("displayContents");
@@ -19,7 +19,7 @@ const Latest = () => {
   );
 
   const get_data = () => {
-    axios.post(`/api/movies/latest`).then((res) => {
+    axios.post(`${baseUrl}/api/movies/latest`).then((res) => {
       setMovies(res.data.movie);
       setTv(res.data.tv);
     });
@@ -31,7 +31,7 @@ const Latest = () => {
   return (
     <div className="page--wrapper p-10">
       <AllInfo.Provider
-        value={[
+        value={{
           showId,
           setShowId,
           showDeets,
@@ -40,7 +40,7 @@ const Latest = () => {
           setDisplayContents,
           hoverCard,
           setHoverCard,
-        ]}
+        }}
       >
         <div className="moviesCategories">
           {Tv ? (

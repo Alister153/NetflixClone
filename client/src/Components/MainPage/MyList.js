@@ -7,14 +7,13 @@ import AllInfo from "./ContextApi";
 import "./styles/MyList.css";
 import DisplayContents from "./DisplayContent";
 import { Route, Routes } from "react-router-dom";
-import { baseUrl } from "../../url";
-import { NotificationManager } from "react-notifications";
 import { collection, onSnapshot } from "firebase/firestore";
 import LoadingSkeleton from "../LoadingSkeleton";
+import { baseUrl } from "../../url";
 
 const MyList = () => {
   const display = sessionStorage.getItem("displayContents");
-  const [activeProfile] = useContext(Profile);
+  const {activeProfile} = useContext(Profile);
   const [list, setlist] = useState();
   const [showDeets, setShowDeets] = useState();
   const [showId, setShowId] = useState();
@@ -27,7 +26,7 @@ const MyList = () => {
       userId: auth.currentUser.uid,
       name: activeProfile,
     };
-    axios.post(`/api/profile/my-list`, data).then((res) => {
+    axios.post(`${baseUrl}/api/profile/my-list`, data).then((res) => {
       setlist(res.data);
     });
   };
@@ -49,7 +48,7 @@ const MyList = () => {
         <h1 className="ml-1">My List</h1>
       </div>
       <AllInfo.Provider
-        value={[
+        value={{
           showId,
           setShowId,
           showDeets,
@@ -58,7 +57,7 @@ const MyList = () => {
           setDisplayContents,
           hoverCard,
           setHoverCard,
-        ]}
+        }}
       >
         <div className="moviesCategories">
           {list ? (

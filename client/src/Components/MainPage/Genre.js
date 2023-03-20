@@ -13,14 +13,15 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
-import { ScreenWidth, Scroll } from "../../App";
-import { baseUrl, OriginalimgPATH } from "../../url";
+import { Scroll } from "../../App";
+import { OriginalimgPATH, baseUrl } from "../../url";
+import { useScreenWidth } from "../../Hooks.";
 
 const Genre = () => {
   const currPath = useLocation().pathname;
   const display = sessionStorage.getItem("displayContents");
-  const [scroll, setScroll] = useContext(Scroll);
-  const screen = useContext(ScreenWidth);
+  const {setScroll} = useContext(Scroll);
+  const screen = useScreenWidth()
   const navigate = useNavigate();
 
   const { genre } = useParams();
@@ -34,7 +35,7 @@ const Genre = () => {
   const [random, setRandom] = useState();
 
   const fetchData = () => {
-    axios.post(`/api/movies/genre/${genre}`).then((res) => {
+    axios.post(`${baseUrl}/api/movies/genre/${genre}`).then((res) => {
       setData(res.data);
       const response = res.data;
       const keys = Object.keys(response);
@@ -54,7 +55,7 @@ const Genre = () => {
   return (
     <div className="page--wrapper display-show--wrapper">
       <AllInfo.Provider
-        value={[
+        value={{
           showId,
           setShowId,
           showDeets,
@@ -63,7 +64,7 @@ const Genre = () => {
           setDisplayContents,
           hoverCard,
           setHoverCard,
-        ]}
+        }}
       >
         {screen > 900 && random && (
           <>

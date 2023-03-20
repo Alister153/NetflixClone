@@ -1,8 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const axios = require("axios");
 
 app.post("/get-shows", async (req, res) => {
+  
   let movies = await axios.get(
     `${process.env.moviesApiURL}/trending/all/week${process.env.apiKey}`
   );

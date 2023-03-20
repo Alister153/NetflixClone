@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { userData } from "../userData";
-import { usePalette } from "react-palette";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { auth } from "../../firebase";
@@ -14,7 +13,6 @@ const CreateProfile = () => {
   const [ProfileName, setProfileName] = useState("");
   const [ProfileActive, setProfileActive] = useState(false);
   const profileImg = useRef();
-  const { vibrant } = usePalette(selectedImage).data;
 
   const createProfile = () => {
     const data = {
@@ -23,24 +21,25 @@ const CreateProfile = () => {
       userId: auth.currentUser.uid,
     };
 
-    axios.post(`/api/profile/create-profile`, data).then((res) => {
+    axios.post(`${baseUrl}/api/profile/create-profile`, data).then((res) => {
       navigate("/");
     });
   };
-  const animateImage = () => {
-    const img = profileImg.current;
-    if (imgTimeout) clearTimeout(imgTimeout);
-    img.style.boxShadow = `none`;
-    img.classList.remove("on");
-    img.classList.add("off");
-    imgTimeout = setTimeout(() => {
-      img.classList.remove("off");
-      img.classList.add("on");
-      img.src = selectedImage;
-    }, 200);
-  };
 
   useEffect(() => {
+    const animateImage = () => {
+      const img = profileImg.current;
+      if (imgTimeout) clearTimeout(imgTimeout);
+      img.style.boxShadow = `none`;
+      img.classList.remove("on");
+      img.classList.add("off");
+      imgTimeout = setTimeout(() => {
+        img.classList.remove("off");
+        img.classList.add("on");
+        img.src = selectedImage;
+      }, 200);
+    };
+
     if (selectedImage) animateImage();
   }, [selectedImage]);
 
@@ -48,7 +47,10 @@ const CreateProfile = () => {
     <>
       <header className="logo">
         <div>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1198px-Netflix_2015_logo.svg.png?20190206123158"></img>
+          <img
+            alt="logo"
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1198px-Netflix_2015_logo.svg.png?20190206123158"
+          ></img>
         </div>
       </header>
       <div className="create-profile-wrapper">
@@ -59,12 +61,7 @@ const CreateProfile = () => {
               setShowImages(!showsImages);
             }}
           >
-            {selectedImage && (
-              <img
-                ref={profileImg}
-                style={{ boxShadow: `0px 0px 20px ${vibrant}` }}
-              ></img>
-            )}
+            {selectedImage && <img alt="profile-img" ref={profileImg}></img>}
           </figure>
           <p style={{ fontSize: "20px", height: "20px" }}>{ProfileName}</p>
           {showsImages && (
@@ -78,7 +75,7 @@ const CreateProfile = () => {
                         setShowImages(false);
                       }}
                     >
-                      <img src={userData[k].img}></img>
+                      <img alt="image" src={userData[k].img}></img>
                     </div>
                   );
                 })}

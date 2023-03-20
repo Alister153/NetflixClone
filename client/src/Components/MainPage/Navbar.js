@@ -1,20 +1,19 @@
-import { useState, useContext, useRef } from "react";
-import { Profile, ProfilesData, ScreenWidth, validate } from "../../App";
-import { userData } from "../userData";
+import { useContext, useRef } from "react";
+import { Profile, ProfilesData, validate } from "../../App";
 import { BiSearch, BiUser, BiHelpCircle } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoIosNotifications } from "react-icons/io";
 import { GoTriangleDown, GoPencil } from "react-icons/go";
-import { search } from "../../App";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
+import { useScreenWidth } from "../../Hooks.";
 
 var searchTimeout = 0;
 function Navbar(props) {
-  const screen = useContext(ScreenWidth);
-  const [, setSignIn] = useContext(validate);
-  const [activeProfile, setActiveProfile] = useContext(Profile);
-  const [Allprofiles, setAllProfiles] = useContext(ProfilesData);
+  const screen = useScreenWidth();
+  const { setSignIn } = useContext(validate);
+  const { activeProfile, setActiveProfile } = useContext(Profile);
+  const { Allprofiles } = useContext(ProfilesData);
   const navigate = useNavigate();
   const searchRef = useRef();
   const notifications = useRef();

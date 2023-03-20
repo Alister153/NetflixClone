@@ -4,20 +4,18 @@ import { NotificationManager } from "react-notifications";
 import { useNavigate } from "react-router-dom";
 import { ProfilesData } from "../../App";
 import { auth } from "../../firebase";
-import { baseUrl } from "../../url";
-import { usePalette } from "react-palette";
 import { userData } from "../userData";
+import { baseUrl } from "../../url";
 
 var imgTimeout = 0;
 const EditProfile = () => {
   const navigate = useNavigate();
-  const [Allprofiles, setAllProfiles] = useContext(ProfilesData);
+  const { Allprofiles } = useContext(ProfilesData);
   const [edit, setEdit] = useState(false);
   const [editProfile, setEditProfile] = useState();
   const [showsImages, setShowImages] = useState(false);
   const [editProfileName, setEditProfileName] = useState();
   const [selectedImage, setSelectedImage] = useState();
-  const { vibrant } = usePalette(selectedImage).data;
   const profileImg = useRef();
 
   const deleteProf = () => {
@@ -25,10 +23,15 @@ const EditProfile = () => {
       userId: auth.currentUser.uid,
       name: editProfileName,
     };
-    axios.post(`/api/profile/delete-profile`, data).then((res) => {
-      setEdit();
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(
+        `${baseUrl}/api/profile/delete-profile`,
+        data
+      )
+      .then((res) => {
+        setEdit();
+        NotificationManager.success(res.data);
+      });
   };
 
   const saveProf = () => {
@@ -39,10 +42,15 @@ const EditProfile = () => {
       picture: selectedImage,
     };
 
-    axios.post(`/api/profile/update-profile`, data).then((res) => {
-      setEdit();
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(
+        `${baseUrl}/api/profile/update-profile`,
+        data
+      )
+      .then((res) => {
+        setEdit();
+        NotificationManager.success(res.data);
+      });
   };
 
   const animateImage = () => {
@@ -147,11 +155,7 @@ const EditProfile = () => {
                     setShowImages(!showsImages);
                   }}
                 >
-                  <img
-                    src={selectedImage}
-                    ref={profileImg}
-                    style={{ boxShadow: `0px 0px 15px ${vibrant}` }}
-                  ></img>
+                  <img src={selectedImage} ref={profileImg}></img>
                   <div className="edit-icon absolute flex items-center justify-center">
                     <svg
                       width="24"

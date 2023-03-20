@@ -1,28 +1,27 @@
 import { useRef, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ScreenWidth, Scroll } from "../../App";
+import { Scroll } from "../../App";
 import { w500imgPATH } from "../../url";
 import MovieHover from "./CardHover";
 import AllInfo from "./ContextApi";
+import { useScreenWidth } from "../../Hooks.";
 
 const SliderItem = (s) => {
   const location = useLocation();
   const currPath = location.pathname;
   const searchVal = location.search;
   const navigate = useNavigate();
-  const screen = useContext(ScreenWidth);
+  const screen = useScreenWidth()
   const CurrCard = useRef();
-  const [, setScroll] = useContext(Scroll);
-  const [
+  const {setScroll} = useContext(Scroll);
+  const {
     showId,
     setShowId,
-    showDeets,
     setShowDeets,
-    forDisplayContents,
     setDisplayContents,
     hoverCard,
     setHoverCard,
-  ] = useContext(AllInfo);
+  } = useContext(AllInfo);
 
   return (
     <div

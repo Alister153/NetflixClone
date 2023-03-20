@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, createContext } from "react";
+import { useContext, useEffect, createContext } from "react";
 import "./styles/Profiles.css";
 import { Profile, ProfilesData } from "../App";
 import { useNavigate } from "react-router-dom";
@@ -7,9 +7,8 @@ export const profileApi = createContext();
 
 function Profiles() {
   const navigate = useNavigate();
-  const [activeProfile, setActiveProfile] = useContext(Profile);
-  const [Allprofiles, setAllProfiles] = useContext(ProfilesData);
-  const [create, setCreate] = useState(false);
+  const {activeProfile, setActiveProfile} = useContext(Profile);
+  const {Allprofiles} = useContext(ProfilesData);
 
   const nxtPage = (user) => {
     setActiveProfile(user);

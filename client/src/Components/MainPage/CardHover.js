@@ -6,27 +6,18 @@ import {
 } from "react-icons/io";
 import { BsFillHandThumbsUpFill, BsHandThumbsDownFill } from "react-icons/bs";
 import { FaAngleUp } from "react-icons/fa";
-import { useContext, useRef, useState } from "react";
+import { useContext, useRef } from "react";
 import { List, Profile } from "../../App";
 import { auth } from "../../firebase";
 import { NotificationManager } from "react-notifications";
-import { baseUrl, OriginalimgPATH, YOUTUBE } from "../../url";
+import { OriginalimgPATH, YOUTUBE, baseUrl } from "../../url";
 import AllInfo from "./ContextApi";
 
 var trailerTimeout = 0;
 
 function MovieHover(props) {
-  const [activeProfile] = useContext(Profile);
-  const [
-    showId,
-    setShowId,
-    showDeets,
-    setShowDeets,
-    forDisplayContents,
-    setDisplayContents,
-    hoverCard,
-    setHoverCard,
-  ] = useContext(AllInfo);
+  const {activeProfile} = useContext(Profile);
+  const { showId, showDeets } = useContext(AllInfo);
   const list = useContext(List);
 
   const placement = document.querySelector(`[data-id="${showId}"]`);
@@ -45,9 +36,11 @@ function MovieHover(props) {
       type: showDeets.media_type,
     };
 
-    axios.post(`/api/profile/add-item`, data).then((res) => {
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(`${baseUrl}/api/profile/add-item`, data)
+      .then((res) => {
+        NotificationManager.success(res.data);
+      });
   };
 
   const removeFromList = () => {
@@ -58,9 +51,14 @@ function MovieHover(props) {
       type: showDeets.media_type,
     };
 
-    axios.post(`/api/profile/remove-item`, data).then((res) => {
-      NotificationManager.success(res.data);
-    });
+    axios
+      .post(
+        `${baseUrl}/api/profile/remove-item`,
+        data
+      )
+      .then((res) => {
+        NotificationManager.success(res.data);
+      });
   };
 
   const checkList = () => {
@@ -82,9 +80,12 @@ function MovieHover(props) {
     }
   }
   return (
-    <div className={`movieHover ${props.cardType} ${name}`} onClick={() => {
-      clearTimeout(trailerTimeout)
-    }}>
+    <div
+      className={`movieHover ${props.cardType} ${name}`}
+      onClick={() => {
+        clearTimeout(trailerTimeout);
+      }}
+    >
       <figure className="show-trailer">
         <img
           loading="lazy"
@@ -144,10 +145,13 @@ function MovieHover(props) {
 }
 
 export const fetchTrailer = async (show) => {
-  const trailer = await axios.post(`/api/movies/get-trailer`, {
-    id: show.id,
-    type: show.media_type,
-  });
+  const trailer = await axios.post(
+    `${baseUrl}/api/movies/get-trailer`,
+    {
+      id: show.id,
+      type: show.media_type,
+    }
+  );
   const data = await trailer.data[0];
   document.querySelector(".show-trailer").innerHTML = `<iframe
     class="trailer"

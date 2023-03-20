@@ -695,7 +695,7 @@ input:focus {
   transition: transform 500ms ease;
 }
 .more--info .recommendations .movies .recomend-movie-wrapper:hover {
-  transform: scale(1.1);
+  transform: scale(1);
 }
 .more--info .recommendations .movies .recomend-movie-wrapper h2 {
   font-size: large;

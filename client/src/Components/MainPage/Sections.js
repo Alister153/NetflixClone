@@ -1,14 +1,14 @@
 import { useState, useContext, useEffect } from "react";
-import LoadingSkeleton from "../LoadingSkeleton";
 import { FaAngleRight } from "react-icons/fa";
 import SliderItem from "./SliderItem";
 import { ScreenWidth } from "../../App";
 import { useNavigate } from "react-router-dom";
+import { useScreenWidth } from "../../Hooks.";
 
 function Categories(props) {
   const navigate = useNavigate();
   const [slider, setSlider] = useState();
-  const scroll = useContext(ScreenWidth);
+  const scroll = useScreenWidth()
   var x = scroll < 500 || scroll > 900 ? 90 : 100;
 
   const handleScroll = (e) => {

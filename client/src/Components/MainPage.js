@@ -5,17 +5,18 @@ import DisplayContents from "./MainPage/DisplayContent";
 import LoadingSkeleton from "./LoadingSkeleton";
 import MovieHover from "./MainPage/CardHover";
 import AllInfo from "./MainPage/ContextApi";
-import { ScreenWidth, Scroll } from "../App";
-import { baseUrl, OriginalimgPATH } from "../url";
+import { Scroll } from "../App";
+import { OriginalimgPATH, baseUrl } from "../url";
 import Categories from "./MainPage/Sections";
 import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { useScreenWidth } from "../Hooks.";
 
 function MainPage() {
   const display = sessionStorage.getItem("displayContents");
   const currPath = useLocation().pathname;
   const navigate = useNavigate();
-  const screen = useContext(ScreenWidth);
-  const [, setScroll] = useContext(Scroll);
+  const screen = useScreenWidth()
+  const {setScroll} = useContext(Scroll);
   const [shows, setShows] = useState();
   const [showId, setShowId] = useState();
   const [showDeets, setShowDeets] = useState();
@@ -26,15 +27,18 @@ function MainPage() {
   const [genres, setGenres] = useState();
 
   const fetchMovies = () => {
-    axios.post(`/api/movies/get-shows`).then((res) => {
-      setShows(res.data);
-    });
+    axios
+      .post(`${baseUrl}/api/movies/get-shows`)
+      .then((res) => {
+        setShows(res.data);
+      });
 
-    axios.post(`/api/movies/get-showByGenre`).then((res) => {
-      setGenres(res.data);
-    });
+    axios
+      .post(`${baseUrl}/api/movies/get-showByGenre`)
+      .then((res) => {
+        setGenres(res.data);
+      });
   };
-
 
   useEffect(() => {
     fetchMovies();
@@ -43,7 +47,7 @@ function MainPage() {
   return (
     <div className="page--wrapper p-10">
       <AllInfo.Provider
-        value={[
+        value={{
           showId,
           setShowId,
           showDeets,
@@ -52,7 +56,7 @@ function MainPage() {
           setDisplayContents,
           hoverCard,
           setHoverCard,
-        ]}
+        }}
       >
         <main className="moviesCategories">
           {screen > 1100 && (
