@@ -19,15 +19,15 @@ import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import EditProfile from "./Components/ProfileComponents/editProfile";
 import { baseUrl } from "./url";
 
-const PagesRoutes = (props) =>
+const PagesRoutes = ({signIn}) =>
   useRoutes([
     {
       path: "/",
-      element: props.value[0] ? <Profiles></Profiles> : <Signup></Signup>,
+      element: signIn ? <Profiles></Profiles> : <Signup></Signup>,
     },
     {
       path: "/Manage",
-      element: props.value[0] && <EditProfile></EditProfile>,
+      element: signIn && <EditProfile></EditProfile>,
     },
     {
       path: "/browse/*",
@@ -43,7 +43,7 @@ const PagesRoutes = (props) =>
     },
     {
       path: "/search/*",
-      element: props.value[0] && <Search></Search>,
+      element: signIn && <Search></Search>,
     },
     {
       path: "/genre/:genre/*",
@@ -141,7 +141,7 @@ function App() {
                   <List.Provider value={list}>
                     <Router>
                       {activeProfile && signIn && <Navbar></Navbar>}
-                      <PagesRoutes value={signIn}></PagesRoutes>
+                      <PagesRoutes signIn={signIn}></PagesRoutes>
                     </Router>
                   </List.Provider>
               </Scroll.Provider>
